@@ -26,4 +26,6 @@ const Provincia = sequelize.define('Provincia', {
     },
 });
 
+// Definir la asociación
+Provincia.belongsTo(Departamento, { foreignKey: 'departamento_id' });
 module.exports = Provincia;

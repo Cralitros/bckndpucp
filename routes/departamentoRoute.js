@@ -1,12 +1,17 @@
 // routes/departamentos.js
 const express = require('express');
 const Departamento = require('../models/Departamento');
+const Provincia = require('../models/Provincia');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   let departamentos;
   try {
-    departamentos = await Departamento.findAll();
+    departamentos = await Departamento.findAll(
+      {
+        //include:[Provincia]
+      }
+    );
   } catch (error) {
     res.json(error);
   }
