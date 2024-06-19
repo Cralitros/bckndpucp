@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Docente } = require('../models/Docente');
-const { DocenteLaboral } = require('../models/DocenteGrados');
+const  Docente  = require('../models/Docente');
+const  DocenteLaboral  = require('../models/DocenteGrados');
 
 
 

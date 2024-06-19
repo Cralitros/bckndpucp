@@ -20,8 +20,6 @@ app.use('/docentesencuesta', require('./routes/docentesEncuestaRoute'));
 app.use('/curso', require('./routes/cursoRoute'));
 app.use('/encuesta', require('./routes/encuestaRoute'));
 app.use('/categoria', require('./routes/condicionRoute'));
-app.use('/departae', require('./routes/condicionRoute'));
-app.use('/categoria', require('./routes/condicionRoute'));
 app.use('/departamentos', require('./routes/departamentoRoute'));
 app.use('/provincias', require('./routes/provinciaRoute'));
 app.use('/distritos', require('./routes/distritoRoute'));

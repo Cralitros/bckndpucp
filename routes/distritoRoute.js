@@ -9,7 +9,12 @@ router.get('/', async (req, res) => {
   let distritos;
   try {
     distritos = await Distrito.findAll({
-      include:[Departamento,Provincia]
+      include:[{
+        model: Provincia,
+        include: {
+          model: Departamento,
+        }
+      }]
     });
   } catch (error) {
     res.json(error);
@@ -24,7 +29,12 @@ router.get('/:provincia_id', async (req, res) => {
 
   try {
     distritos = await Distrito.findAll({
-      include:[Departamento,Provincia],
+      include:[{
+        model: Provincia,
+        include: {
+          model: Departamento,
+        }
+      }],
       where: {
         provincia_id: provincia_id
       }

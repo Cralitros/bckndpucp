@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Condicion } = require('../models/Condicion');
+const Condicion  = require('../models/Condicion');
 
 /*router.get('/', condicionController.encontrarTodo);
 router.get('/:id', condicionController.encontrarTodo);
@@ -10,8 +10,9 @@ router.delete('/:id', condicionController.eliminar);*/
 // otras rutas
 // Obtener todos los condicions
 router.get('/', async (req, res) => {
+    let condiciones;
     try {
-        const condiciones = await Condicion.findAll();
+        condiciones = await Condicion.findAll();
         res.json(condiciones);
     } catch (error) {
         res.status(500).json({ error: error.message });

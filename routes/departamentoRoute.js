@@ -2,6 +2,7 @@
 const express = require('express');
 const Departamento = require('../models/Departamento');
 const Provincia = require('../models/Provincia');
+const Distrito = require('../models/Distrito');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -9,7 +10,12 @@ router.get('/', async (req, res) => {
   try {
     departamentos = await Departamento.findAll(
       {
-        //include:[Provincia]
+        include:[{
+          model: Provincia,
+          include: {
+            model: Distrito,
+          }
+        }]
       }
     );
   } catch (error) {

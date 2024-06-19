@@ -2,13 +2,14 @@
 const express = require('express');
 const Provincia = require('../models/Provincia');
 const Departamento = require('../models/Departamento');
+const Distrito = require('../models/Distrito');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   let provincias;
   try {
     provincias = await Provincia.findAll({
-      include:[Departamento]
+      include:[Departamento, Distrito]
     });
   } catch (error) {
     res.json(error);
@@ -23,7 +24,7 @@ router.get('/:departamento_id', async (req, res) => {
 
   try {
     provincias = await Provincia.findAll({
-      include:[Departamento],
+      include:[Departamento, Distrito],
       where: {
         departamento_id: departamento_id
       }

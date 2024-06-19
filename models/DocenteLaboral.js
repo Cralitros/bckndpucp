@@ -58,4 +58,4 @@ const DocenteLaboral = sequelize.define('DocenteLaboral', {
 });
 
 
-module.exports =Docente; 
+module.exports =DocenteLaboral; 

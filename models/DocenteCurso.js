@@ -39,4 +39,4 @@ const DocenteCurso = sequelize.define('DocenteCurso', {
 });
 
 
-module.exports =Curso; 
+module.exports =DocenteCurso; 

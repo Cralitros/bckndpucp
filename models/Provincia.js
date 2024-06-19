@@ -2,6 +2,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Departamento = require('./Departamento');
+const Distrito = require('./Distrito');
 
 const Provincia = sequelize.define('Provincia', {
     id: {
@@ -27,5 +28,8 @@ const Provincia = sequelize.define('Provincia', {
 });
 
 // Definir la asociación
-Provincia.belongsTo(Departamento, { foreignKey: 'departamento_id' });
+Distrito.belongsTo(Provincia, { foreignKey: 'provincia_id' });
+Provincia.hasMany(Distrito, { foreignKey: 'provincia_id' });
+
+
 module.exports = Provincia;

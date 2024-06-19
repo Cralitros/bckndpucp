@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { Condicion } = require('../models/Condicion');
-const { Docente } = require('../models/Docente');
-const {DocenteGrados} = require('../models/DocenteGrados');
-const {DocenteLaboral} = require('../models/DocenteLaboral');
-const {DocenteCurso} = require('../models/DocenteCurso');
-const {DocenteCategoria} = require('../models/DocenteCategoria');
-const {DocenteInvestigador} = require('../models/DocenteInvestigador');
+const  Condicion  = require('../models/Condicion');
+const  Docente  = require('../models/Docente');
+const DocenteGrados = require('../models/DocenteGrados');
+const DocenteLaboral = require('../models/DocenteLaboral');
+const DocenteCurso = require('../models/DocenteCurso');
+const DocenteCategoria = require('../models/DocenteCategoria');
+const DocenteInvestigador = require('../models/DocenteInvestigador');
 
 
 /*router.get('/', docenteController.encontrarTodo);
@@ -20,7 +20,7 @@ module.exports = router;*/
 router.get('/', async (req, res) => {
     try {
         const docentes = await Docente.findAll(
-            { include: [Condicion, DocenteGrados, DocenteLaboral, DocenteCategoria,DocenteCurso,DocenteInvestigador] }
+            { include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador] }
         );
         res.json(docentes);
     } catch (error) {
@@ -33,7 +33,7 @@ router.get('/:codigodocentes', async (req, res) => {
         const codigodocentes = req.params.codigodocentes;
         const docentes = await Docente.findAll(
             {
-                include: [Condicion, DocenteGrados, DocenteLaboral, DocenteCategoria,DocenteCurso,DocenteInvestigador],
+                include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador],
                 where: { codigodocentes },
             }
         );

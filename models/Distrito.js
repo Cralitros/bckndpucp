@@ -19,7 +19,6 @@ const Distrito = sequelize.define('Distrito', {
     },
     provincia_id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
         references: {
             model: Provincia,
             key: 'id'

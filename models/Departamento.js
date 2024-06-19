@@ -1,6 +1,7 @@
 // models/Departamento.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const Provincia = require('./Provincia');
 
 const Departamento = sequelize.define('Departamento', {
   id: {
@@ -17,5 +18,8 @@ const Departamento = sequelize.define('Departamento', {
     allowNull: false
   }
 });
+
+Provincia.belongsTo(Departamento, { foreignKey: 'departamento_id' });
+Departamento.hasMany(Provincia, { foreignKey: 'departamento_id' });
 
 module.exports = Departamento;

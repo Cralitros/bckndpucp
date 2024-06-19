@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Docente } = require('../models/Docente');
-const { DocenteLaboral } = require('../models/DocenteLaboral');
+const  Docente  = require('../models/Docente');
+const  DocenteLaboral  = require('../models/DocenteLaboral');
 
 /*router.get('/', docenteController.encontrarTodo);
 router.get('/:codigoProfesor', docenteController.encontrarTodo);
