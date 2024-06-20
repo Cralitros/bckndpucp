@@ -7,6 +7,9 @@ const DocenteLaboral = require('../models/DocenteLaboral');
 const DocenteCurso = require('../models/DocenteCurso');
 const DocenteCategoria = require('../models/DocenteCategoria');
 const DocenteInvestigador = require('../models/DocenteInvestigador');
+const Departamento = require('../models/Departamento');
+const Provincia = require('../models/Provincia');
+const Distrito = require('../models/Distrito');
 
 
 /*router.get('/', docenteController.encontrarTodo);
@@ -22,6 +25,28 @@ router.get('/', async (req, res) => {
         const docentes = await Docente.findAll(
             { include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador] }
         );
+
+        console.log(docentes);
+        // Iterar sobre los docentes para deserializar y buscar lugar_nacimiento
+        for (let docente of docentes) {
+            if (docente.lugar_nacimiento) {
+                let lugarNacimiento = JSON.parse(docente.lugar_nacimiento);
+                let departamento = await Departamento.findByPk(lugarNacimiento.departamento);
+                let provincia = await Provincia.findByPk(lugarNacimiento.provincia);
+                let distrito = await Distrito.findByPk(lugarNacimiento.distrito);
+
+                // Puedes agregar estos nombres al objeto docente si lo deseas
+                docente.dataValues.lugarNacimiento = {
+                    departamento: departamento ? departamento.nombre : null,
+                    provincia: provincia ? provincia.nombre : null,
+                    distrito: distrito ? distrito.nombre : null
+                };
+                console.log(docente.dataValues.lugarNacimiento);
+            }
+        }
+        console.log("*********************");
+        console.log(docentes);
+        console.log("*********************");
         res.json(docentes);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -57,10 +82,10 @@ router.post('/', async (req, res) => {
 // Actualizar un condicion
 router.put('/:codigodocentes', async (req, res) => {
     try {
-        const codigodocentes = req.params.codigodocentes;
+        const codigo = req.params.codigodocentes;
         // Actualizar el registro de departamento en la base de datos
         await Docente.update(req.body, {
-            where: { codigodocentes },
+            where: { codigo },
         });
 
         res.status(201).json("Se actualizo correctamente");

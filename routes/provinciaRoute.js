@@ -22,12 +22,28 @@ router.get('/:departamento_id', async (req, res) => {
   const { departamento_id } = req.params;
   let provincias;
 
+  console.log(departamento_id);
   try {
     provincias = await Provincia.findAll({
       include:[Departamento, Distrito],
       where: {
         departamento_id: departamento_id
       }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.json(provincias);
+});
+router.get('/provin/:id', async (req, res) => {
+  const { id } = req.params;
+  let provincias;
+
+  try {
+    provincias = await Provincia.findAll({
+      include:[Departamento, Distrito],
+      where: { id: id }
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
