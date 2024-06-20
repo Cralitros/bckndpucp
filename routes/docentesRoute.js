@@ -55,11 +55,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:codigodocentes', async (req, res) => {
     try {
-        const codigodocentes = req.params.codigodocentes;
+        const codigo = req.params.codigodocentes;
         const docentes = await Docente.findAll(
             {
                 include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador],
-                where: { codigodocentes },
+                where: { codigo },
             }
         );
         res.json(docentes);
@@ -98,10 +98,10 @@ router.put('/:codigodocentes', async (req, res) => {
 // Eliminar un condicion
 router.delete('/:codigodocentes', async (req, res) => {
     try {
-        const codigodocentes = req.params.codigodocentes;
+        const codigo = req.params.codigodocentes;
         // Eliminar el registro de departamento de la base de datos
         await Docente.destroy({
-            where: { codigodocentes },
+            where: { codigo },
         });
 
         res.status(200).json({ mensaje: 'Registro eliminado' });;
