@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:codigodocentes', async (req, res) => {
+router.get('/cod/:codigodocentes', async (req, res) => {
     try {
         const codigoDocente = req.params.codigodocentes;
         const docenteLaborales = await DocenteLaboral.findAll(
@@ -33,7 +33,7 @@ router.get('/:codigodocentes', async (req, res) => {
         );
         res.json(docenteLaborales);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ length: 0 });
     }
 });
 
