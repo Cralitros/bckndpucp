@@ -1,14 +1,9 @@
 // models/Distrito.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Docente = require('./Docente');
-const Encuesta = require('./Encuesta');
-const curso = require('./Encuesta');
-const Curso = require('./Curso');
 
 
-
-const DocenteCurso = sequelize.define('DocenteCurso', {
+const DocenteEncuesta = sequelize.define('DocenteEncuesta', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -22,31 +17,8 @@ const DocenteCurso = sequelize.define('DocenteCurso', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
-    codigoEncuesta:{
-        type: DataTypes.STRING,
-        primaryKey: true,
-        references: {
-            model: Encuesta,
-            key: 'id'
-        }
-    },
-    codigoDocente:{
-        type: DataTypes.STRING,
-        primaryKey: true,
-        references: {
-            model: Curso,
-            key: 'codigo'
-        }
-    },
-    codigoCurso:{
-        type: DataTypes.STRING,
-        primaryKey: true,
-        references: {
-            model: Curso,
-            key: 'codigo'
-        }
-    },
+   
 });
 
 
-module.exports =Curso; 
+module.exports =DocenteEncuesta; 

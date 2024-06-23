@@ -1,9 +1,6 @@
 // models/Distrito.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Docente = require('./Docente');
-
-
 
 const DocenteGrados = sequelize.define('DocenteGrados', {
     id: {
@@ -27,14 +24,7 @@ const DocenteGrados = sequelize.define('DocenteGrados', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
-    codigoDocente:{
-        type: DataTypes.STRING,
-        primaryKey: true,
-        references: {
-            model: Docente,
-            key: 'codigo'
-        }
-    },
+   
 });
 
 

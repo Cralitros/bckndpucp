@@ -1,6 +1,6 @@
 // routes/departamentos.js
 const express = require('express');
-const Encuesta = require('../models/Encuesta');
+const Encuesta = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {

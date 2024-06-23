@@ -1,6 +1,6 @@
 // routes/distritos.js
 const express = require('express');
-const Distrito = require('../models/Distrito');
+const Distrito = require('../models');
 const Departamento = require('../models/Departamento');
 const Provincia = require('../models/Provincia');
 const router = express.Router();

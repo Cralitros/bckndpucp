@@ -1,7 +1,6 @@
 // models/Distrito.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Provincia = require('./Provincia');
 
 const Distrito = sequelize.define('Distrito', {
     id: {
@@ -17,13 +16,7 @@ const Distrito = sequelize.define('Distrito', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    provincia_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Provincia,
-            key: 'id'
-        }
-    },
+   
 });
 
 

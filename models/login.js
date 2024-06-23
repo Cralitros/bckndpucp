@@ -24,4 +24,4 @@ const Login = sequelize.define('Login', {
 });
 
 
-module.exports =Curso; 
+module.exports =Login; 

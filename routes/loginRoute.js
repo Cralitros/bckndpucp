@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { login } = require('../models/login');
+const { login } = require('../models');
 const bcrypt = require('bcrypt');
 
 /*router.get('/', condicionController.encontrarTodo);

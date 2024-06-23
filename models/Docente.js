@@ -1,13 +1,6 @@
 // models/Distrito.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Condicion = require('./Condicion');
-const DocenteCategoria = require('./DocenteCategoria');
-const DocenteCurso = require('./DocenteCurso');
-const DocenteEncuesta = require('./DocenteEncuesta');
-const DocenteGrados = require('./DocenteGrados');
-const DocenteInvestigador = require('./DocenteInvestigador');
-const DocenteLaboral = require('./DocenteLaboral');
 
 const Docente = sequelize.define('Docente', {
     /*id: {
@@ -111,22 +104,6 @@ const Docente = sequelize.define('Docente', {
     },
     
 });
-DocenteCategoria.belongsTo(Docente, { foreignKey: 'codigoDocente' });
-Docente.hasMany(DocenteCategoria, { foreignKey: 'codigoDocente' });
 
-DocenteCurso.belongsTo(Docente, { foreignKey: 'codigoDocente' });
-Docente.hasMany(DocenteCurso, { foreignKey: 'codigoDocente' });
-
-DocenteEncuesta.belongsTo(Docente, { foreignKey: 'codigoDocente' });
-Docente.hasMany(DocenteEncuesta, { foreignKey: 'codigoDocente' });
-
-DocenteGrados.belongsTo(Docente, { foreignKey: 'codigoDocente' });
-Docente.hasMany(DocenteGrados, { foreignKey: 'codigoDocente' });
-
-DocenteInvestigador.belongsTo(Docente, { foreignKey: 'codigoDocente' });
-Docente.hasMany(DocenteInvestigador, { foreignKey: 'codigoDocente' });
-
-DocenteLaboral.belongsTo(Docente, { foreignKey: 'codigoDocente' });
-Docente.hasMany(DocenteLaboral, { foreignKey: 'codigoDocente' });
 
 module.exports =Docente; 

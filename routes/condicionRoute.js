@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Condicion  = require('../models/Condicion');
+const Condicion  = require('../models');
 
 /*router.get('/', condicionController.encontrarTodo);
 router.get('/:id', condicionController.encontrarTodo);

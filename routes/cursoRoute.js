@@ -1,6 +1,6 @@
 // routes/departamentos.js
 const express = require('express');
-const Curso = require('../models/Curso');
+const Curso = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
