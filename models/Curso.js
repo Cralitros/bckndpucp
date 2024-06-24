@@ -27,7 +27,7 @@ const Curso = sequelize.define('Curso', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    programa: {
+    facultad: {
         type: DataTypes.STRING,
         allowNull: false
     },

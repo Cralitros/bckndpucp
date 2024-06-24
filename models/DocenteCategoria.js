@@ -17,7 +17,7 @@ const DocenteCategoria = sequelize.define('DocenteCategoria', {
         allowNull: false
     },
 
-    condicion: {
+    categoria: {
         type: DataTypes.STRING,
         allowNull: false
     },

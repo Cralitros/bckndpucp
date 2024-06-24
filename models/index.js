@@ -51,8 +51,8 @@ Docente.hasMany(DocenteCurso, { foreignKey: 'codigoDocente' });
 DocenteCurso.belongsTo(Curso, { foreignKey: 'codigoCurso' });
 Curso.hasMany(DocenteCurso, { foreignKey: 'codigoCurso' });
 
-DocenteCategoria.belongsTo(Condicion, { foreignKey: 'idCategoria' });
-Condicion.hasMany(DocenteCategoria, { foreignKey: 'idCategoria' });
+DocenteCategoria.belongsTo(Condicion, { foreignKey: 'idCondicion' });
+Condicion.hasMany(DocenteCategoria, { foreignKey: 'idCondicion' });
 
 // Exporta todos los modelos
 module.exports = {
