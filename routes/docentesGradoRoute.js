@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const  Docente  = require('../models/Docente');
-const  DocenteLaboral  = require('../models');
 
-
+const { Docente, DocenteGrados } = require('../models');
 
 router.get('/', async (req, res) => {
     try {
-        const docenteLaborales = await DocenteLaboral.findAll(
+        const docenteGrados = await DocenteGrados.findAll(
             { include: [Docente] }
         );
-        res.json(docenteLaborales);
+        res.json(docenteGrados);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -19,13 +17,13 @@ router.get('/', async (req, res) => {
 router.get('/:codigodocentes', async (req, res) => {
     try {
         const codigoDocente = req.params.codigodocentes;
-        const docenteLaborales = await DocenteLaboral.findAll(
+        const docenteGrados = await DocenteGrados.findAll(
             {
                 include: [Docente],
                 where: { codigoDocente },
             }
         );
-        res.json(docenteLaborales);
+        res.json(docenteGrados);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -35,8 +33,8 @@ router.get('/:codigodocentes', async (req, res) => {
 // Crear un nuevo condicion
 router.post('/', async (req, res) => {
     try {
-        const docenteLaborales = await DocenteLaboral.create(req.body);
-        res.status(201).json(docenteLaborales);
+        const docenteGrados = await DocenteGrados.create(req.body);
+        res.status(201).json(docenteGrados);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -47,7 +45,7 @@ router.put('/:codigodocentes', async (req, res) => {
     try {
         const codigoDocente = req.params.codigodocentes;
         // Actualizar el registro de departamento en la base de datos
-        await DocenteLaboral.update(req.body, {
+        await DocenteGrados.update(req.body, {
             where: { codigoDocente },
         });
 
@@ -63,7 +61,7 @@ router.delete('/:codigodocentes', async (req, res) => {
     try {
         const codigoDocente = req.params.codigodocentes;
         // Eliminar el registro de departamento de la base de datos
-        await DocenteLaboral.destroy({
+        await DocenteGrados.destroy({
             where: { codigoDocente },
         });
 

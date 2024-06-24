@@ -1,15 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const  Docente  = require('../models/Docente');
-const  DocenteLaboral  = require('../models');
 
-/*router.get('/', docenteController.encontrarTodo);
-router.get('/:codigoProfesor', docenteController.encontrarTodo);
-router.post('/', docenteController.crear);
-router.put('/:codigoProfesor', docenteController.actualizar);
-router.delete('/:codigoProfesor', docenteController.eliminar);
-// otras rutas
-module.exports = router;*/
+const { Docente,  DocenteLaboral } = require('../models');
+
 
 router.get('/', async (req, res) => {
     try {

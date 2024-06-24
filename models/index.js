@@ -12,6 +12,7 @@ const DocenteLaboral = require('./DocenteLaboral');
 const Provincia = require('./Provincia');
 const Departamento = require('./Departamento');
 const Distrito = require('./Distrito');
+const Condicion = require('./Condicion');
 
 // Define las asociaciones aquí
 Provincia.belongsTo(Departamento, { foreignKey: 'departamento_id' });
@@ -50,6 +51,9 @@ Docente.hasMany(DocenteCurso, { foreignKey: 'codigoDocente' });
 DocenteCurso.belongsTo(Curso, { foreignKey: 'codigoCurso' });
 Curso.hasMany(DocenteCurso, { foreignKey: 'codigoCurso' });
 
+DocenteCategoria.belongsTo(Condicion, { foreignKey: 'idCategoria' });
+Condicion.hasMany(DocenteCategoria, { foreignKey: 'idCategoria' });
+
 // Exporta todos los modelos
 module.exports = {
     Docente,
@@ -60,5 +64,9 @@ module.exports = {
     DocenteGrados,
     DocenteInvestigador,
     DocenteLaboral,
-    Curso
+    Curso,
+    Departamento,
+    Provincia,
+    Distrito,
+    Condicion
 };

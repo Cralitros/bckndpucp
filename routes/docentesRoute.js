@@ -1,30 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const  Condicion  = require('../models/Condicion');
-const  Docente  = require('../models');
-const DocenteGrados = require('../models/DocenteGrados');
-const DocenteLaboral = require('../models/DocenteLaboral');
-const DocenteCurso = require('../models/DocenteCurso');
-const DocenteCategoria = require('../models/DocenteCategoria');
-const DocenteInvestigador = require('../models/DocenteInvestigador');
-const Departamento = require('../models/Departamento');
-const Provincia = require('../models/Provincia');
-const Distrito = require('../models/Distrito');
+const { Docente, DocenteGrados, DocenteLaboral, DocenteCurso, DocenteCategoria, DocenteInvestigador, Departamento, Provincia, Distrito } = require('../models');
 
-
-/*router.get('/', docenteController.encontrarTodo);
-router.get('/:codigoProfesor', docenteController.encontrarTodo);
-router.post('/', docenteController.crear);
-router.put('/:codigoProfesor', docenteController.actualizar);
-router.delete('/:codigoProfesor', docenteController.eliminar);
-// otras rutas
-module.exports = router;*/
 
 router.get('/', async (req, res) => {
     try {
+        console.log("7777777777777777777777");
         const docentes = await Docente.findAll(
             { include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador] }
         );
+        console.log("7777777777777777777777");
 
         console.log(docentes);
         // Iterar sobre los docentes para deserializar y buscar lugar_nacimiento

@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const  Docente  = require('../models/Docente');
-const  DocenteCategoria  = require('../models');
 
+const { Docente, DocenteCategoria, Condicion } = require('../models');
 
 
 router.get('/', async (req, res) => {
     try {
         const docenteLaborales = await DocenteCategoria.findAll(
-            { include: [Docente] }
+            { include: [Docente, Condicion] }
         );
         res.json(docenteLaborales);
     } catch (error) {
@@ -18,11 +17,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:codigodocentes', async (req, res) => {
     try {
-        const codigodocentes = req.params.codigodocentes;
+        const codigoDocente = req.params.codigodocentes;
         const docenteLaborales = await DocenteCategoria.findAll(
             {
-                include: [Docente],
-                where: { codigodocentes },
+                include: [Docente,Condicion],
+                where: { codigoDocente },
             }
         );
         res.json(docenteLaborales);
@@ -45,10 +44,10 @@ router.post('/', async (req, res) => {
 // Actualizar un condicion
 router.put('/:codigodocentes', async (req, res) => {
     try {
-        const codigodocentes = req.params.codigodocentes;
+        const codigoDocente = req.params.codigodocentes;
         // Actualizar el registro de departamento en la base de datos
         await DocenteCategoria.update(req.body, {
-            where: { codigodocentes },
+            where: { codigoDocente },
         });
 
         res.status(201).json("Se actualizo correctamente");
@@ -61,10 +60,10 @@ router.put('/:codigodocentes', async (req, res) => {
 // Eliminar un condicion
 router.delete('/:codigodocentes', async (req, res) => {
     try {
-        const codigodocentes = req.params.codigodocentes;
+        const codigoDocente = req.params.codigodocentes;
         // Eliminar el registro de departamento de la base de datos
         await DocenteCategoria.destroy({
-            where: { codigodocentes },
+            where: { codigoDocente },
         });
 
         res.status(200).json({ mensaje: 'Registro eliminado' });;

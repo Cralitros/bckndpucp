@@ -1,8 +1,7 @@
 // routes/departamentos.js
 const express = require('express');
-const Departamento = require('../models');
-const Provincia = require('../models/Provincia');
-const Distrito = require('../models/Distrito');
+
+const { Departamento, Provincia, Distrito } = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {

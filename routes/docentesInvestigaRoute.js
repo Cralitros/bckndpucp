@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const  Docente  = require('../models/Docente');
-const  DocenteInvestigador  = require('../models');
 
-
+const { Docente, DocenteInvestigador } = require('../models');
 
 router.get('/', async (req, res) => {
     try {
