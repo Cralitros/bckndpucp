@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { login } = require('../models');
+const { Login } = require('../models');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 /*router.get('/', condicionController.encontrarTodo);
 router.get('/:id', condicionController.encontrarTodo);
@@ -12,7 +13,7 @@ router.delete('/:id', condicionController.eliminar);*/
 // Obtener todos los condicions
 router.get('/', async (req, res) => {
     try {
-        const condiciones = await login.findAll();
+        const condiciones = await Login.findAll();
         res.json(condiciones);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
     try {
         const id = req.params.id;
         
-        const condiciones = await login.findAll(
+        const condiciones = await Login.findAll(
             {
                 where: { id },
             }
@@ -40,7 +41,7 @@ router.post('/register', async (req, res) => {
     const { usuario, password } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await login.create({ usuario, password: hashedPassword });
+        const newUser = await Login.create({ usuario, password: hashedPassword });
         res.status(201).json(newUser);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -51,7 +52,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { usuario, password } = req.body;
     try {
-        const user = await login.findOne({ where: { usuario } });
+        const user = await Login.findOne({ where: { usuario } });
         if (!user) {
             return res.status(400).json({ error: 'Usuario no encontrado' });
         }
@@ -73,7 +74,7 @@ router.put('/:id', async (req, res) => {
     try {
         const id = req.params.id;
         // Actualizar el registro de departamento en la base de datos
-        await login.update(req.body, {
+        await Login.update(req.body, {
             where: { id },
         });
 
@@ -88,7 +89,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        await login.destroy({
+        await Login.destroy({
             where: { id },
         });
 

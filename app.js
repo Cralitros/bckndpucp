@@ -3,6 +3,7 @@ const sequelize = require('./config/database');
 const cors = require('cors'); 
 const jwt = require('jsonwebtoken');
 const app = express();
+const bcrypt= require('bcryptjs');
 
 //let nombre_carpeta_Server="/backendpucp/";
 let nombre_carpeta_Server="";
@@ -24,6 +25,9 @@ app.use(`/categoria`, require('./routes/condicionRoute'));
 app.use(`/departamentos`, require('./routes/departamentoRoute'));
 app.use(`/provincias`, require('./routes/provinciaRoute'));
 app.use(`/distritos`, require('./routes/distritoRoute'));
+app.use(`/facultad`, require('./routes/facultadRoute'));
+app.use(`/escuela`, require('./routes/escuelaRoute'));
+app.use(`/login`, require('./routes/loginRoute'));
 
 
 const PORT = process.env.PORT || 3000;

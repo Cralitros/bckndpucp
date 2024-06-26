@@ -1,12 +1,19 @@
 // routes/curso.js
 const express = require('express');
-const {Curso} = require('../models');
+const {Curso, Facultad, Escuela} = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   let curso;
   try {
-    curso = await Curso.findAll();
+    curso = await Curso.findAll({
+      include:[{
+        model: Escuela,
+        include: {
+          model: Facultad,
+        }
+      }]
+    });
   } catch (error) {
     res.json(error);
   }
@@ -17,6 +24,9 @@ router.get('/:codigo', async (req, res) => {
   let curso;
   try {
     curso = await Curso.findAll({
+      include:[{
+        model: Escuela,
+      }],
       where: { codigo: req.params.codigo }
     });
   } catch (error) {

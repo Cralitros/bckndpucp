@@ -27,14 +27,7 @@ const Curso = sequelize.define('Curso', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    facultad: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    escuela: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+
 });
 
 
