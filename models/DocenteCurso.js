@@ -16,6 +16,22 @@ const DocenteCurso = sequelize.define('DocenteCurso', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
+    modalidad: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    tipo: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    tipo_clase: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    estado: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 
     
 });

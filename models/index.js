@@ -12,10 +12,11 @@ const DocenteLaboral = require('./DocenteLaboral');
 const Provincia = require('./Provincia');
 const Departamento = require('./Departamento');
 const Distrito = require('./Distrito');
-const Condicion = require('./Condicion');
+//const Condicion = require('./Condicion');
 const Facultad = require('./Facultad');
 const Escuela = require('./Escuela');
-const Login = require('./login');
+const Programas = require('./Programas');
+const Login = require('./Login');
 
 
 // Define las asociaciones aquí
@@ -55,16 +56,18 @@ Docente.hasMany(DocenteCurso, { foreignKey: 'codigoDocente' });
 DocenteCurso.belongsTo(Curso, { foreignKey: 'codigoCurso' });
 Curso.hasMany(DocenteCurso, { foreignKey: 'codigoCurso' });
 
-DocenteCategoria.belongsTo(Condicion, { foreignKey: 'idCondicion' });
-Condicion.hasMany(DocenteCategoria, { foreignKey: 'idCondicion' });
+/*DocenteCategoria.belongsTo(Condicion, { foreignKey: 'idCondicion' });
+Condicion.hasMany(DocenteCategoria, { foreignKey: 'idCondicion' });*/
 
 
 Escuela.belongsTo(Facultad, { foreignKey: 'idFacultad' });
 Facultad.hasMany(Escuela, { foreignKey: 'idFacultad' });
 
+Programas.belongsTo(Escuela, { foreignKey: 'idEscuela' });
+Escuela.hasMany(Programas, { foreignKey: 'idEscuela' });
 
-Curso.belongsTo(Escuela, { foreignKey: 'idEscuela' });
-Escuela.hasMany(Curso, { foreignKey: 'idEscuela' });
+Curso.belongsTo(Programas, { foreignKey: 'idPrograma' });
+Programas.hasMany(Curso, { foreignKey: 'idPrograma' });
 
 // Exporta todos los modelos
 module.exports = {
@@ -80,7 +83,8 @@ module.exports = {
     Departamento,
     Provincia,
     Distrito,
-    Condicion,
+    Programas,
+   // Condicion,
     Facultad,
     Escuela,
     Login

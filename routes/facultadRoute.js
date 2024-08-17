@@ -1,7 +1,7 @@
 // routes/departamentos.js
 const express = require('express');
 
-const { Facultad, Escuela } = require('../models');
+const { Facultad, Escuela, Programas } = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -11,6 +11,9 @@ router.get('/', async (req, res) => {
       {
         include:[{
           model: Escuela,
+          include: {
+            model: Programas,
+          }
 
         }]
       }

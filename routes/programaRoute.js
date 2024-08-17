@@ -1,15 +1,20 @@
 // routes/departamentos.js
 const express = require('express');
 
-const { Facultad, Escuela, Programas } = require('../models');
+const { Facultad, Escuela,Programas } = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   let facultades;
   try {
-    facultades = await Escuela.findAll(
+    facultades = await Programas.findAll(
       {
-        include:[Facultad, Programas]
+        include:[{
+          model: Escuela,
+          include: {
+            model: Facultad,
+          }
+        }]
       }
     );
   } catch (error) {
@@ -20,9 +25,14 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   let facultades;
   try {
-    facultades = await Escuela.findAll(
+    facultades = await Programas.findAll(
       {
-        include:[Facultad, Programas],
+        include:[{
+          model: Escuela,
+          include: {
+            model: Facultad,
+          }
+        }],
         where: { id: req.params.id }
       }
     );
@@ -38,7 +48,7 @@ router.post('/', async (req, res) => {
   let facultades;
   try {
     console.log(req.params);
-    facultades = await Escuela.create(req.body);
+    facultades = await Programas.create(req.body);
   } catch (error) {
     res.json(error);
   }
@@ -49,7 +59,7 @@ router.put('/:id', async (req, res) => {
   let facultades;
   try {
     console.log(req.body);
-    facultades = await Escuela.update(req.body, {
+    facultades = await Programas.update(req.body, {
       where: { id: req.params.id }
     });
   } catch (error) {
@@ -61,7 +71,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   let facultades;
   try {
-    facultades = await Escuela.destroy({
+    facultades = await Programas.destroy({
       where: { id: req.params.id }
     });
   } catch (error) {

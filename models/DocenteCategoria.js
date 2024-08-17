@@ -16,8 +16,23 @@ const DocenteCategoria = sequelize.define('DocenteCategoria', {
         type: DataTypes.STRING,
         allowNull: false
     },
-
     categoria: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    condiciondap: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    dedicacion: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    labor: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    categoriadap: {
         type: DataTypes.STRING,
         allowNull: false
     },

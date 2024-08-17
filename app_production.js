@@ -4,7 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const app = express();
 
-let nombre_carpeta_Server="/backendpucp/";
+let nombre_carpeta_Server="/backend/";
 app.use(express.json());
 // Habilitar CORS
 app.use(cors());
@@ -23,25 +23,26 @@ app.use(`${nombre_carpeta_Server}categoria`, require('./routes/condicionRoute'))
 app.use(`${nombre_carpeta_Server}departamentos`, require('./routes/departamentoRoute'));
 app.use(`${nombre_carpeta_Server}provincias`, require('./routes/provinciaRoute'));
 app.use(`${nombre_carpeta_Server}distritos`, require('./routes/distritoRoute'));
+app.use(`${nombre_carpeta_Server}facultad`, require('./routes/facultadRoute'));
+app.use(`${nombre_carpeta_Server}escuela`, require('./routes/escuelaRoute'));
+app.use(`${nombre_carpeta_Server}login`, require('./routes/loginRoute'));
 
+
+const PORT = process.env.PORT || 3000;
 
 // Prueba de funcionamiento
 app.get(`/${nombre_carpeta_Server}/distritos`, (req, res) => {
   res.send('Servidor está funcionando correctamente');
 });
 
-// Inicializar Sequelize
-const PORT = process.env.PORT || 3000;
-
-// Prueba de funcionamiento
-app.get(`/distritos`, (req, res) => {
-  res.send('Servidor está funcionando correctamente');
-});
-
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => {
+  try {
+    app.listen(PORT, () => {
       console.log('Servidor iniciado en http://localhost:3000');
-  });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }).catch(err => {
   console.error('No se pudo conectar a la base de datos:', err);
 });
