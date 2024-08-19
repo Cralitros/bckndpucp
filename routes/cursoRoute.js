@@ -1,6 +1,6 @@
 // routes/curso.js
 const express = require('express');
-const {Curso, Facultad, Escuela} = require('../models');
+const {Curso, Facultad, Escuela, Programas} = require('../models');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -8,9 +8,12 @@ router.get('/', async (req, res) => {
   try {
     curso = await Curso.findAll({
       include:[{
-        model: Escuela,
+        model: Programas,
         include: {
-          model: Facultad,
+          model: Escuela,
+          include: {
+            model: Facultad,
+          }
         }
       }]
     });
@@ -25,7 +28,13 @@ router.get('/:codigo', async (req, res) => {
   try {
     curso = await Curso.findAll({
       include:[{
-        model: Escuela,
+        model: Programas,
+        include: {
+          model: Escuela,
+          include: {
+            model: Facultad,
+          }
+        }
       }],
       where: { codigo: req.params.codigo }
     });

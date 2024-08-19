@@ -14,7 +14,6 @@ router.get('/', async (req, res) => {
           include: {
             model: Programas,
           }
-
         }]
       }
     );
