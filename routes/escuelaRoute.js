@@ -32,6 +32,20 @@ router.get('/:id', async (req, res) => {
   res.json(facultades);
 });
 
+router.get('/lista/:id', async (req, res) => {
+  let facultades;
+  try {
+    facultades = await Escuela.findAll(
+      {
+        include:[Facultad, Programas],
+        where: { idFacultad: req.params.id }
+      }
+    );
+  } catch (error) {
+    res.json(error);
+  }
+  res.json(facultades);
+});
 
 
 router.post('/', async (req, res) => {
