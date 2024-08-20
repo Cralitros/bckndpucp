@@ -36,6 +36,10 @@ const DocenteCategoria = sequelize.define('DocenteCategoria', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    ratificado: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 
 });
 
