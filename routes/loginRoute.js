@@ -38,10 +38,22 @@ router.get('/:id', async (req, res) => {
 
 // Crear un nuevo condicion
 router.post('/register', async (req, res) => {
-    const { usuario, password } = req.body;
+    const { dni, password, nivel, rol, 
+        nombres, apellidos, email, cargo } = req.body;
+    console.log(req.body);
+    
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await Login.create({ usuario, password: hashedPassword });
+        const newUser = await Login.create({ 
+            dni, 
+            password: hashedPassword,
+            nivel,
+            rol,
+            nombres, 
+            apellidos, 
+            email, 
+            cargo 
+         });
         res.status(201).json(newUser);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -50,9 +62,9 @@ router.post('/register', async (req, res) => {
 
 // Login de usuario
 router.post('/login', async (req, res) => {
-    const { usuario, password } = req.body;
+    const { dni, password } = req.body;
     try {
-        const user = await Login.findOne({ where: { usuario } });
+        const user = await Login.findOne({ where: { dni } });
         if (!user) {
             return res.status(400).json({ error: 'Usuario no encontrado' });
         }
@@ -63,7 +75,15 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ id: user.id }, 'secretkey', { expiresIn: '1h' });
-        res.status(200).json({ token });
+        res.status(200).json({ token:token, 
+            nivel:user.nivel,
+            dni:user.dni,
+            rol:user.rol,
+            nombres:user.nombres, 
+            apellidos:user.apellidos, 
+            email:user.email, 
+            cargo:user.cargo
+         });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
