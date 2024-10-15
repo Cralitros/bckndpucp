@@ -16,6 +16,18 @@ const Programas = sequelize.define('Programas', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  director: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  inicio: {
+    type: DataTypes.DATEONLY,
+    allowNull: false
+  },
+  fin: {
+    type: DataTypes.DATEONLY,
+    allowNull: false
+  }
 });
 
 module.exports = Programas;

@@ -66,6 +66,8 @@ router.get('/lista/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   let facultades;
+  console.log(req.body);
+  
   try {
     console.log(req.params);
     facultades = await Programas.create(req.body);

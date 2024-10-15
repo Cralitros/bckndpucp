@@ -12,6 +12,7 @@ const Escuela = sequelize.define('Escuela', {
     type: DataTypes.STRING,
     allowNull: false
   }
+
 });
 
 module.exports = Escuela;
