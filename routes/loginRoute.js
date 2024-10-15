@@ -93,8 +93,19 @@ router.post('/login', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const id = req.params.id;
+        let {nivel, dni, nombres,apellidos,email,cargo, password}=req.body;
+        console.log(req.body);
+        
+        let hashedPassword;
+        console.log("****");
+        
+        if(password!=''){
+            console.log("****111111111");
+            password = await bcrypt.hash(password, 10);
+        }
+        console.log("****22222");
         // Actualizar el registro de departamento en la base de datos
-        await Login.update(req.body, {
+        await Login.update({nivel, dni, nombres,apellidos,email,cargo, password}, {
             where: { id },
         });
 
