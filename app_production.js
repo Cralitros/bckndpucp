@@ -4,7 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const app = express();
 
-let nombre_carpeta_Server="/backend/";
+let nombre_carpeta_Server="/backendpucp/";
 app.use(express.json());
 // Habilitar CORS
 app.use(cors());
@@ -19,12 +19,13 @@ app.use(`${nombre_carpeta_Server}docentescurso`, require('./routes/docentesCurso
 app.use(`${nombre_carpeta_Server}docentesencuesta`, require('./routes/docentesEncuestaRoute'));
 app.use(`${nombre_carpeta_Server}curso`, require('./routes/cursoRoute'));
 app.use(`${nombre_carpeta_Server}encuesta`, require('./routes/encuestaRoute'));
-app.use(`${nombre_carpeta_Server}categoria`, require('./routes/condicionRoute'));
+//app.use(`${nombre_carpeta_Server}categoria`, require('./routes/condicionRoute'));
 app.use(`${nombre_carpeta_Server}departamentos`, require('./routes/departamentoRoute'));
 app.use(`${nombre_carpeta_Server}provincias`, require('./routes/provinciaRoute'));
 app.use(`${nombre_carpeta_Server}distritos`, require('./routes/distritoRoute'));
 app.use(`${nombre_carpeta_Server}facultad`, require('./routes/facultadRoute'));
 app.use(`${nombre_carpeta_Server}escuela`, require('./routes/escuelaRoute'));
+app.use(`${nombre_carpeta_Server}programa`, require('./routes/programaRoute'));
 app.use(`${nombre_carpeta_Server}login`, require('./routes/loginRoute'));
 
 
@@ -43,6 +44,7 @@ sequelize.sync({ force: false }).then(() => {
   } catch (error) {
     console.log(error);
   }
+
 }).catch(err => {
   console.error('No se pudo conectar a la base de datos:', err);
 });

@@ -36,7 +36,6 @@ app.get(`/distritos`, (req, res) => {
   res.send('Servidor está funcionando correctamente');
 });
 
-
 sequelize.sync({ force: false }).then(() => {
   try {
     app.listen(PORT, () => {
