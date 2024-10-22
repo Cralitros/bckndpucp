@@ -1,15 +1,56 @@
 // routes/departamentos.js
 const express = require('express');
+const pdfMake = require('pdfmake');
 
 const { Departamento, Provincia, Distrito } = require('../models');
 const router = express.Router();
+
+router.get('/report', async (req, res) => {
+  const fonts = {
+    Roboto: {
+      normal: 'fonts/Roboto-Regular.ttf',
+      bold: 'fonts/Roboto-Medium.ttf',
+      italics: 'fonts/Roboto-Italic.ttf',
+      bolditalics: 'fonts/Roboto-Italic.ttf'
+    }
+  };
+
+  const printer = new pdfMake(fonts);
+  const docDefinition = {
+    content: [
+      { text: 'Reporte generado', style: 'header' },
+      'Este es un reporte generado usando PDFMake con Node.js.'
+    ],
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true
+      }
+    }
+  };
+
+  const pdfDoc = printer.createPdfKitDocument(docDefinition);
+  let chunks = [];
+  pdfDoc.on('data', chunk => {
+    chunks.push(chunk);
+  });
+
+  pdfDoc.on('end', () => {
+    const result = Buffer.concat(chunks);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.send(result);
+  });
+
+  pdfDoc.end();
+});
+
 
 router.get('/', async (req, res) => {
   let departamentos;
   try {
     departamentos = await Departamento.findAll(
       {
-        include:[{
+        include: [{
           model: Provincia,
           include: {
             model: Distrito,
