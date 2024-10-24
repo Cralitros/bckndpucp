@@ -27,6 +27,9 @@ app.use(`/facultad`, require('./routes/facultadRoute'));
 app.use(`/escuela`, require('./routes/escuelaRoute'));
 app.use(`/programa`, require('./routes/programaRoute'));
 app.use(`/login`, require('./routes/loginRoute'));
+app.use(`/bancos`, require('./routes/bancoRoute'));
+app.use(`/afps`, require('./routes/afpRoute'));
+app.use(`/plan`, require('./routes/planRoute'));
 
 
 const PORT = process.env.PORT || 3000;

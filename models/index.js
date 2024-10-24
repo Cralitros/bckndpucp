@@ -12,6 +12,9 @@ const DocenteLaboral = require('./DocenteLaboral');
 const Provincia = require('./Provincia');
 const Departamento = require('./Departamento');
 const Distrito = require('./Distrito');
+const Banco = require('./Banco');
+const Afp = require('./Afp');
+const Plan = require('./Plan');
 //const Condicion = require('./Condicion');
 const Facultad = require('./Facultad');
 const Escuela = require('./Escuela');
@@ -87,5 +90,8 @@ module.exports = {
    // Condicion,
     Facultad,
     Escuela,
-    Login
+    Login,
+    Banco,
+    Afp,
+    Plan
 };

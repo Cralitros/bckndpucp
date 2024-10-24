@@ -1,35 +1,30 @@
-// routes/distritos.js
+// routes/departamentos.js
 const express = require('express');
-
-const { Departamento, Provincia, Distrito } = require('../models');
-const router = express.Router();
-
+const pdfMake = require('pdfmake');
 const fs = require('fs');
 const path = require('path');
-const pdfMake = require('pdfmake');
+const Banco = require('../models/Banco');
+
+
+const router = express.Router();
+
 router.get('/report', async (req, res) => {
   try {
 
-    distritos = await Distrito.findAll({
-      include:[{
-        model: Provincia,
-        include: {
-          model: Departamento,
-        }
-      }]
-    });
-    console.log(distritos);
+    let bancos = await Banco.findAll();
+    console.log(departamentos);
 
+   
     const tableBody = [
-      ['ID', 'Provincia','Distrito', 'Ubigeo'] // Encabezados de la tabla
+      ['ID', 'Nombre'] // Encabezados de la tabla
     ];
+  
     // Añadir los departamentos como filas
-    distritos.forEach(distrito => {
-      tableBody.push([distrito.id.toString(),distrito.Provincium.nombre, distrito.nombre,  distrito.Provincium.Departamento.valor+distrito.Provincium.valor+distrito.valor]);
+    bancos.forEach(banco => {
+      tableBody.push([banco.id.toString(), banco.nombre]);
     });
-
-    console.log(tableBody);
     
+
     const fonts = {
       Roboto: {
         normal: 'fonts/Roboto-Regular.ttf',
@@ -39,8 +34,9 @@ router.get('/report', async (req, res) => {
       }
     };
 
+    res.json("departamentos33333333333333332")
     const printer = new pdfMake(fonts);
-    const imagePath = './routes/images/logo.png'; // Ruta de tu imagen
+    const imagePath ='./routes/images/logo.png'; // Ruta de tu imagen
     const imageBase64 = fs.readFileSync(imagePath, 'base64');
     console.log(imagePath);
     
@@ -50,7 +46,7 @@ router.get('/report', async (req, res) => {
         { 
           columns: [
             { 
-              text: 'REPORTE DE PROVINCIAS', 
+              text: 'REPORTE DE BANCOS', 
               style: 'header', 
               alignment: 'left', 
               margin: [0, 0, 0, 20] 
@@ -63,13 +59,13 @@ router.get('/report', async (req, res) => {
             }
           ]
         },
-        { text: 'Lista de provincias', style: 'subheader', margin: [0, 0, 0, 10] },
+        { text: 'Lista de Bancos', style: 'subheader', margin: [0, 0, 0, 10] },
         {
           style: 'tableExample',
           table: {
             headerRows: 1,
             //widths: ['auto', 'auto','*'],
-            widths: ['auto', 'auto', 'auto','auto'],
+            widths: ['auto', 'auto'],
             body: tableBody
           },
           layout: {
@@ -143,79 +139,51 @@ router.get('/report', async (req, res) => {
 
 
 router.get('/', async (req, res) => {
-  let distritos;
+  let bancos;
   try {
-    distritos = await Distrito.findAll({
-      include:[{
-        model: Provincia,
-        include: {
-          model: Departamento,
-        }
-      }]
-    });
+    bancos = await Banco.findAll(  );
   } catch (error) {
     res.json(error);
   }
-  res.json(distritos);
+  res.json(bancos);
 });
 
 
-router.get('/:provincia_id', async (req, res) => {
-  const { provincia_id } = req.params;
-  let distritos;
-
-  try {
-    distritos = await Distrito.findAll({
-      include:[{
-        model: Provincia,
-        include: {
-          model: Departamento,
-        }
-      }],
-      where: {
-        provincia_id: provincia_id
-      }
-    });
-    console.log(distritos);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-
-  res.json(distritos);
-});
 
 router.post('/', async (req, res) => {
-  let distrito;
+  let bancos;
   try {
-    distrito = await Distrito.create(req.body);
+    console.log(req.params);
+    bancos = await Banco.create(req.body);
   } catch (error) {
     res.json(error);
   }
-  res.json(distrito);
+  res.json(bancos);
 });
 
 router.put('/:id', async (req, res) => {
-  let distrito;
+  let bancos;
   try {
-    distrito = await Distrito.update(req.body, {
+    console.log(req.body);
+    bancos = await Banco.update(req.body, {
       where: { id: req.params.id }
     });
   } catch (error) {
     res.json(error);
   }
-  res.json(distrito);
+  res.json(bancos);
 });
 
 router.delete('/:id', async (req, res) => {
-  let result;
+  let bancos;
   try {
-    result = await Distrito.destroy({
+    bancos = await Banco.destroy({
       where: { id: req.params.id }
     });
   } catch (error) {
     res.json(error);
   }
-  res.json(result);
+  res.json(bancos);
 });
 
 module.exports = router;
