@@ -9,20 +9,29 @@ const Plan = require('../models/Plan');
 const router = express.Router();
 
 router.get('/report', async (req, res) => {
+  
   try {
 
-    let planes = await Plan.findAll();
-    console.log(departamentos);
+    let general = await Plan.findAll();
+    console.log(general);
 
-   
+
+    // Extrae los nombres de los campos del primer objeto y excluye 'createdAt' y 'updatedAt'
+    const headers = Object.keys(general[0].dataValues).filter(
+      (field) => field !== 'createdAt' && field !== 'updatedAt'
+    );
+
+    const columnWidths = Array.from({ length: headers.length }, () => 'auto');
+    console.log(headers);
+
+    // Convierte los nombres de campos en un array de encabezados
     const tableBody = [
-      ['ID', 'Nombre', 'Nivel académico','Vigencia'] // Encabezados de la tabla
+      headers // Usamos los nombres de los campos como encabezados
     ];
-  
-    // Añadir los departamentos como filas
-    planes.forEach(plan => {
-      tableBody.push([plan.id.toString(), plan.nombre,plan.nivel_academico,plan.vigencia]);
+    general.forEach(gen => {
+      tableBody.push(headers.map(header => gen.dataValues[header]));
     });
+
     
 
     const fonts = {
@@ -34,22 +43,22 @@ router.get('/report', async (req, res) => {
       }
     };
 
-    res.json("departamentos33333333333333332")
+
     const printer = new pdfMake(fonts);
-    const imagePath ='./routes/images/logo.png'; // Ruta de tu imagen
+    const imagePath = path.join(__dirname, '../public/images/logo.png');; // Ruta de tu imagen
     const imageBase64 = fs.readFileSync(imagePath, 'base64');
     console.log(imagePath);
-    
+    //res.json(imagePath)
 
     const docDefinition = {
       content: [
-        { 
+        {
           columns: [
-            { 
-              text: 'REPORTE DE PLAN DE ESTUDIO', 
-              style: 'header', 
-              alignment: 'left', 
-              margin: [0, 0, 0, 20] 
+            {
+              text: 'REPORTE DE PLAN ACADËMICO',
+              style: 'header',
+              alignment: 'left',
+              margin: [0, 0, 0, 20]
             },
             {
               image: 'data:image/png;base64,' + imageBase64, // Insertar la imagen en formato Base64
@@ -59,13 +68,12 @@ router.get('/report', async (req, res) => {
             }
           ]
         },
-        { text: 'Lista de Plan de estudio', style: 'subheader', margin: [0, 0, 0, 10] },
+        { text: 'Lista de plan', style: 'subheader', margin: [0, 0, 0, 10] },
         {
           style: 'tableExample',
           table: {
             headerRows: 1,
-            //widths: ['auto', 'auto','*'],
-            widths: ['auto', 'auto', 'auto', 'auto'],
+            widths:columnWidths,
             body: tableBody
           },
           layout: {
@@ -136,7 +144,6 @@ router.get('/report', async (req, res) => {
     res.json(error);
   }
 });
-
 
 router.get('/', async (req, res) => {
   let planes;

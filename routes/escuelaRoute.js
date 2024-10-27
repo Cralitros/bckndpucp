@@ -8,25 +8,41 @@ const fs = require('fs');
 const path = require('path');
 const pdfMake = require('pdfmake');
 router.get('/report', async (req, res) => {
+  
   try {
 
-    escuelas = await Escuela.findAll(
+    let general =  await Escuela.findAll(
       {
         include:[Facultad, Programas]
       }
     );
-    console.log(escuelas);
+    console.log(general);
 
+
+    // Extrae los nombres de los campos del primer objeto y excluye 'createdAt' y 'updatedAt'
+    const headers = Object.keys(general[0].dataValues).filter(
+      (field) => field !== 'createdAt' && field !== 'updatedAt'&& field !== 'Programas'
+    );
+
+    const columnWidths = Array.from({ length: headers.length }, () => 'auto');
+    console.log(headers);
+
+    // Convierte los nombres de campos en un array de encabezados
     const tableBody = [
-      ['ID', 'Departamento académico','Unidad académica'] // Encabezados de la tabla
+      headers // Usamos los nombres de los campos como encabezados
     ];
-    // Añadir los departamentos como filas
-    escuelas.forEach(escuela => {
-      tableBody.push([escuela.id.toString(),escuela.nombre]);
+    general.forEach(gen => {
+      tableBody.push(headers.map(header => {
+        // Si el header es 'Facultad' (que es un objeto), obtenemos el nombre
+        if (header === 'Facultad') {
+          return gen.dataValues.Facultad.nombre; // 'nombre' es el atributo deseado del objeto Facultad
+        }
+        return gen.dataValues[header];
+      }));
     });
 
-    console.log(tableBody);
     
+
     const fonts = {
       Roboto: {
         normal: 'fonts/Roboto-Regular.ttf',
@@ -36,21 +52,22 @@ router.get('/report', async (req, res) => {
       }
     };
 
+
     const printer = new pdfMake(fonts);
-    const imagePath = './routes/images/logo.png'; // Ruta de tu imagen
+    const imagePath = path.join(__dirname, '../public/images/logo.png');; // Ruta de tu imagen
     const imageBase64 = fs.readFileSync(imagePath, 'base64');
     console.log(imagePath);
-    
+    //res.json(imagePath)
 
     const docDefinition = {
       content: [
-        { 
+        {
           columns: [
-            { 
-              text: 'REPORTE DE UNIDADES ACADÉMICAS', 
-              style: 'header', 
-              alignment: 'left', 
-              margin: [0, 0, 0, 20] 
+            {
+              text: 'REPORTE DE DEPARTAMENTO ACADÉMICO',
+              style: 'header',
+              alignment: 'left',
+              margin: [0, 0, 0, 20]
             },
             {
               image: 'data:image/png;base64,' + imageBase64, // Insertar la imagen en formato Base64
@@ -60,13 +77,12 @@ router.get('/report', async (req, res) => {
             }
           ]
         },
-        { text: 'Lista de Unidades acadeémicas', style: 'subheader', margin: [0, 0, 0, 10] },
+        { text: 'Lista de departamento', style: 'subheader', margin: [0, 0, 0, 10] },
         {
           style: 'tableExample',
           table: {
             headerRows: 1,
-            //widths: ['auto', 'auto','*'],
-            widths: ['auto', 'auto'],
+            widths:columnWidths,
             body: tableBody
           },
           layout: {

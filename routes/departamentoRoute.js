@@ -8,20 +8,29 @@ const { Departamento, Provincia, Distrito } = require('../models');
 const router = express.Router();
 
 router.get('/report', async (req, res) => {
+  
   try {
 
     let departamentos = await Departamento.findAll();
     console.log(departamentos);
 
-   
+
+    // Extrae los nombres de los campos del primer objeto y excluye 'createdAt' y 'updatedAt'
+    const headers = Object.keys(departamentos[0].dataValues).filter(
+      (field) => field !== 'createdAt' && field !== 'updatedAt'
+    );
+
+    const columnWidths = Array.from({ length: headers.length }, () => 'auto');
+    console.log(headers);
+
+    // Convierte los nombres de campos en un array de encabezados
     const tableBody = [
-      ['ID', 'Nombre', 'Ubigeo'] // Encabezados de la tabla
+      headers // Usamos los nombres de los campos como encabezados
     ];
-  
-    // Añadir los departamentos como filas
     departamentos.forEach(departamento => {
-      tableBody.push([departamento.id.toString(), departamento.nombre, departamento.valor]);
+      tableBody.push(headers.map(header => departamento.dataValues[header]));
     });
+
     
 
     const fonts = {
@@ -33,22 +42,22 @@ router.get('/report', async (req, res) => {
       }
     };
 
-    res.json("departamentos33333333333333332")
+
     const printer = new pdfMake(fonts);
-    const imagePath ='./routes/images/logo.png'; // Ruta de tu imagen
+    const imagePath = path.join(__dirname, '../public/images/logo.png');; // Ruta de tu imagen
     const imageBase64 = fs.readFileSync(imagePath, 'base64');
     console.log(imagePath);
-    
+    //res.json(imagePath)
 
     const docDefinition = {
       content: [
-        { 
+        {
           columns: [
-            { 
-              text: 'REPORTE DE DEPARTAMENTOS', 
-              style: 'header', 
-              alignment: 'left', 
-              margin: [0, 0, 0, 20] 
+            {
+              text: 'REPORTE DE DEPARTAMENTOS',
+              style: 'header',
+              alignment: 'left',
+              margin: [0, 0, 0, 20]
             },
             {
               image: 'data:image/png;base64,' + imageBase64, // Insertar la imagen en formato Base64
@@ -63,8 +72,7 @@ router.get('/report', async (req, res) => {
           style: 'tableExample',
           table: {
             headerRows: 1,
-            //widths: ['auto', 'auto','*'],
-            widths: ['auto', 'auto', 'auto'],
+            widths:columnWidths,
             body: tableBody
           },
           layout: {
@@ -155,6 +163,7 @@ router.get('/', async (req, res) => {
   }
   res.json(departamentos);
 });
+
 
 
 

@@ -50,7 +50,7 @@ router.get('/report', async (req, res) => {
         { 
           columns: [
             { 
-              text: 'REPORTE DE PROVINCIAS', 
+              text: 'REPORTE DE DISTRITOS', 
               style: 'header', 
               alignment: 'left', 
               margin: [0, 0, 0, 20] 
@@ -63,7 +63,7 @@ router.get('/report', async (req, res) => {
             }
           ]
         },
-        { text: 'Lista de provincias', style: 'subheader', margin: [0, 0, 0, 10] },
+        { text: 'Lista de DISTRITOS', style: 'subheader', margin: [0, 0, 0, 10] },
         {
           style: 'tableExample',
           table: {

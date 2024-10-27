@@ -37,6 +37,15 @@ Docente.hasMany(DocenteCategoria, { foreignKey: 'codigoDocente' });
 DocenteGrados.belongsTo(Docente, { foreignKey: 'codigoDocente' });
 Docente.hasMany(DocenteGrados, { foreignKey: 'codigoDocente' });
 
+Docente.belongsTo(Departamento, { foreignKey: 'idDepartamento' });
+Departamento.hasMany(Docente, { foreignKey: 'idDepartamento' });
+
+Docente.belongsTo(Provincia, { foreignKey: 'idProvincia' });
+Provincia.hasMany(Docente, { foreignKey: 'idProvincia' });
+
+Docente.belongsTo(Distrito, { foreignKey: 'idDistrito' });
+Distrito.hasMany(Docente, { foreignKey: 'idDistrito' });
+
 DocenteInvestigador.belongsTo(Docente, { foreignKey: 'codigoDocente' });
 Docente.hasMany(DocenteInvestigador, { foreignKey: 'codigoDocente' });
 
@@ -62,6 +71,8 @@ Curso.hasMany(DocenteCurso, { foreignKey: 'codigoCurso' });
 /*DocenteCategoria.belongsTo(Condicion, { foreignKey: 'idCondicion' });
 Condicion.hasMany(DocenteCategoria, { foreignKey: 'idCondicion' });*/
 
+Curso.belongsTo(Plan, { foreignKey: 'codigoPlan' });
+Plan.hasMany(Curso, { foreignKey: 'codigoPlan' });
 
 Escuela.belongsTo(Facultad, { foreignKey: 'idFacultad' });
 Facultad.hasMany(Escuela, { foreignKey: 'idFacultad' });

@@ -12,7 +12,7 @@ router.get('/report', async (req, res) => {
   try {
 
     let bancos = await Banco.findAll();
-    console.log(departamentos);
+    console.log(bancos);
 
    
     const tableBody = [
@@ -34,9 +34,9 @@ router.get('/report', async (req, res) => {
       }
     };
 
-    res.json("departamentos33333333333333332")
+    
     const printer = new pdfMake(fonts);
-    const imagePath ='./routes/images/logo.png'; // Ruta de tu imagen
+    const imagePath =path.join(__dirname, '../public/images/logo.png');; // Ruta de tu imagen
     const imageBase64 = fs.readFileSync(imagePath, 'base64');
     console.log(imagePath);
     
