@@ -27,6 +27,7 @@ app.use(`${nombre_carpeta_Server}facultad`, require('./routes/facultadRoute'));
 app.use(`${nombre_carpeta_Server}escuela`, require('./routes/escuelaRoute'));
 app.use(`${nombre_carpeta_Server}programa`, require('./routes/programaRoute'));
 app.use(`${nombre_carpeta_Server}login`, require('./routes/loginRoute'));
+app.use(`${nombre_carpeta_Server}nacionalidad`, require('./routes/nacionalidadRoute'));
 app.use(`${nombre_carpeta_Server}bancos`, require('./routes/bancoRoute'));
 app.use(`${nombre_carpeta_Server}afps`, require('./routes/afpRoute'));
 app.use(`${nombre_carpeta_Server}plan`, require('./routes/planRoute'));
