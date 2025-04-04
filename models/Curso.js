@@ -27,6 +27,10 @@ const Curso = sequelize.define('Curso', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    areas: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 
 });
 

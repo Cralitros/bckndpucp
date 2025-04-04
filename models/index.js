@@ -21,6 +21,7 @@ const Escuela = require('./Escuela');
 const Programas = require('./Programas');
 const Login = require('./Login');
 const Nacionalidad = require('./Nacionalidad');
+const Area = require('./Area');
 
 
 // Define las asociaciones aquí
@@ -106,5 +107,6 @@ module.exports = {
     Banco,
     Nacionalidad,
     Afp,
+    Area,
     Plan
 };

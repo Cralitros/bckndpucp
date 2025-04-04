@@ -30,6 +30,7 @@ app.use(`/login`, require('./routes/loginRoute'));
 app.use(`/bancos`, require('./routes/bancoRoute'));
 app.use(`/nacionalidad`, require('./routes/nacionalidadRoute'));
 app.use(`/afps`, require('./routes/afpRoute'));
+app.use(`/area`, require('./routes/areaRoute'));
 app.use(`/plan`, require('./routes/planRoute'));
 
 

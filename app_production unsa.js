@@ -4,7 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const app = express();
 
-let nombre_carpeta_Server="/backendpucp/";
+let nombre_carpeta_Server="/backendunsa/";
 app.use(express.json());
 // Habilitar CORS
 app.use(cors());

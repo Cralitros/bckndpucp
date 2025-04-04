@@ -57,6 +57,10 @@ const Docente = sequelize.define('Docente', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    especialidad: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     pasaporte: {
         type: DataTypes.STRING,
         allowNull: false

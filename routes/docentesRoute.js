@@ -10,6 +10,38 @@ let departamento;
 let provincia;
 let distrito;
 
+const pdfGenerator = require('../pdf/pfdDocente'); // Importar el módulo
+
+router.get('/contrato/:codigo', async (req, res) => {
+  try {
+    const codigo = req.params.codigo;
+    console.log("contrato");
+    console.log(codigo);
+    
+    // Obtener datos del docente (ajusta según tu lógica)
+    const docente = await Docente.findOne({
+      where: { codigo },
+      include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito]
+    });
+
+    if (!docente) {
+      return res.status(404).json({ error: 'Docente no encontrado' });
+    }
+
+    // Generar el PDF
+    const pdfBuffer = await pdfGenerator.generateContratoDocente(docente.dataValues);
+    
+    // Enviar el PDF como respuesta
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=contrato_docente.pdf');
+    res.send(pdfBuffer);
+
+  } catch (error) {
+    console.error('Error al generar contrato:', error);
+    res.status(500).json({ error: 'Error al generar el documento' });
+  }
+
+})
 
 router.get('/report', async (req, res) => {
 
