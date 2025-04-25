@@ -181,6 +181,11 @@ router.post('/', async (req, res) => {
 router.put('/:codigodocentes', async (req, res) => {
     try {
         const codigoDocente = req.params.codigodocentes;
+        console.log("*******************");
+        
+        console.log(req.body);
+        console.log("*******************");
+        
         // Actualizar el registro de departamento en la base de datos
         await DocenteCategoria.update(req.body, {
             where: { codigoDocente },

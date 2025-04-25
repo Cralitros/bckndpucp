@@ -1,19 +1,73 @@
 const express = require('express');
 const router = express.Router();
 const { Docente, DocenteGrados, DocenteLaboral, DocenteCurso,
-  DocenteCategoria, DocenteInvestigador, Departamento, Provincia, Distrito } = require('../models');
+  DocenteCategoria, DocenteInvestigador, Departamento, Provincia, Distrito, 
+  Login} = require('../models');
 
 const fs = require('fs');
 const path = require('path');
 const pdfMake = require('pdfmake');
+
+
 let departamento;
 let provincia;
 let distrito;
 
 const pdfGenerator = require('../pdf/pfdDocente'); // Importar el módulo
 
-router.get('/contrato/:codigo', async (req, res) => {
+const { generateDocxContrato } = require('../pdf/wordDocente');
+const { Packer } = require('docx');
+
+//generar word
+router.get('/contratow/:codigo', async (req, res) => {
   try {
+    
+    
+
+    const codigo = req.params.codigo;
+
+    const docente = await Docente.findOne({
+      where: { codigo },
+      include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito]
+    });
+    console.log('2222222222222');
+    console.log(docente);
+    
+    if (!docente) {
+      return res.status(404).json({ error: 'Docente no encontrado' });
+    }
+
+    const doc = await generateDocxContrato(docente.dataValues);
+    const buffer = await Packer.toBuffer(doc);
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', 'attachment; filename=contrato_docente.docx');
+    res.send(buffer);
+
+  } catch (error) {
+    console.error('Error al generar DOCX:', error);
+    res.status(500).json({ error: 'Error al generar el documento' });
+  }
+});
+
+//generar pdf
+router.get('/contrato/:codigo/:codr', async (req, res) => {
+  try {
+    const jefePractica=await Login.findOne({
+      where: { cargo:'1' },
+    });
+    console.log('**********************');
+
+    console.log(jefePractica);
+
+    const codr = req.params.codr;
+    const asistente=await Login.findOne({
+      where: { dni:codr },
+    });
+
+    console.log(asistente);
+    
+
     const codigo = req.params.codigo;
     console.log("contrato");
     console.log(codigo);
@@ -29,7 +83,7 @@ router.get('/contrato/:codigo', async (req, res) => {
     }
 
     // Generar el PDF
-    const pdfBuffer = await pdfGenerator.generateContratoDocente(docente.dataValues);
+    const pdfBuffer = await pdfGenerator.generateContratoDocente(docente.dataValues,jefePractica.dataValues, asistente.dataValues);
     
     // Enviar el PDF como respuesta
     res.setHeader('Content-Type', 'application/pdf');

@@ -17,7 +17,7 @@ const DocenteCategoria = sequelize.define('DocenteCategoria', {
         allowNull: false
     },
     categoria: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false
     },
     condiciondap: {
