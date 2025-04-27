@@ -9,7 +9,7 @@ const DocenteGrados = sequelize.define('DocenteGrados', {
         autoIncrement: true
     },
     grado: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: false
     },
     profesion: {

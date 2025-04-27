@@ -171,6 +171,10 @@ router.get('/:codigodocentes', async (req, res) => {
 // Crear un nuevo condicion
 router.post('/', async (req, res) => {
     try {
+      console.log('gradosss');
+      
+      console.log(req.body);
+      
         const docenteGrados = await DocenteGrados.create(req.body);
         res.status(201).json(docenteGrados);
     } catch (error) {
