@@ -12,22 +12,22 @@ const DocenteGrados = sequelize.define('DocenteGrados', {
         type: DataTypes.JSON,
         allowNull: false
     },
-    profesion: {
+   /* profesion: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    revalidado: {
+    },*/
+  /*  revalidado: {
         type: DataTypes.STRING,
         allowNull: false
     },
     lugar_obtencion: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false
     },
     fecha_obtencion: {
         type: DataTypes.DATEONLY,
         allowNull: false
-    },
+    },*/
    
 });
 

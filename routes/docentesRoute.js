@@ -324,9 +324,7 @@ router.get('/cod/:codigo', async (req, res) => {
         console.log(docente.dataValues.lugarNacimiento);
       }
     }
-    console.log("*********************");
-    console.log(docentes);
-    console.log("*********************");
+
     res.json(docentes);
   } catch (error) {
     res.json({ length: 0 });
@@ -363,6 +361,15 @@ router.post('/', async (req, res) => {
 router.put('/:codigodocentes', async (req, res) => {
   try {
     const codigo = req.params.codigodocentes;
+    console.log("actualizado");
+    console.log("actualizado");
+    console.log("actualizado");
+    console.log("actualizado");
+
+    console.log(codigo);
+    console.log(req.body);
+    
+    
     // Actualizar el registro de departamento en la base de datos
     await Docente.update(req.body, {
       where: { codigo },

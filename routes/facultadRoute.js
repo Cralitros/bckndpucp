@@ -163,6 +163,16 @@ router.get('/', async (req, res) => {
   res.json(facultades);
 });
 
+router.get('/excel', async (req, res) => {
+  let facultades;
+  try {
+    facultades = await Facultad.findAll();
+  } catch (error) {
+    res.json(error);
+  }
+  res.json(facultades);
+});
+
 
 
 router.post('/', async (req, res) => {

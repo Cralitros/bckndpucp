@@ -117,10 +117,10 @@ function generateUniversityDocument(docenteData, jefeDocente,asistente) {
                 text: [
                     `${enunciacion} `,
                     { text: `${docenteData.nombres} ${docenteData.apellidos} `, bold: true },
-                    `es docente ${docenteData.DocenteCategoria.length > 0 ? docenteData.DocenteCategoria[0].dataValues.categoriadap + " " : ''}en la categoría `,
-                    { text: `${docenteData.DocenteCategoria.length > 0 ? docenteData.DocenteCategoria[0].dataValues.categoria + " " : ''} `, bold: true },
+                    `es docente en la categoría `,
+                    { text: ``, bold: true },
                     `con dedicación a `,
-                    { text: `${poner_data(docenteData.DocenteCategoria)}`, bold: true },
+                    { text: ``, bold: true },
                     `del Departamento Académico de Derecho en el área Procesal`,
                     '\n\n'
                 ],
@@ -131,7 +131,7 @@ function generateUniversityDocument(docenteData, jefeDocente,asistente) {
                     'Asimismo, debo mencionar que el profesor ',
                     { text: `${docenteData.apellidos} `, bold: true },
                     `ingresó a la docencia universitaria como profesor contratado en el año `,
-                    { text: `${verificar(docenteData.DocenteCategoria[0].dataValues.fecha)}`, bold: true },
+                    { text: ``, bold: true },
                     /*   `siendo ascendido a la categoría de profesor Auxiliar en el año `,
                        { text: `${docenteData.anio_ascenso_auxiliar}.`, bold: true },*/
                     '\n\n'
