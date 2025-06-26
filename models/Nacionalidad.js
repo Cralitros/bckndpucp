@@ -12,6 +12,10 @@ const Nacionalidad = sequelize.define('Nacionalidad', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  pais: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
 
 });
 
