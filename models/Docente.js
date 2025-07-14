@@ -45,10 +45,6 @@ const Docente = sequelize.define('Docente', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    nacionalidad: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     sexo: {
         type: DataTypes.STRING,
         allowNull: false
@@ -71,6 +67,14 @@ const Docente = sequelize.define('Docente', {
     },
     lugar_nacimiento: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    fallecimiento: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    fecha_fallecimiento: {
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     banco: {
@@ -106,8 +110,8 @@ const Docente = sequelize.define('Docente', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    
+
 });
 
 
-module.exports =Docente; 
+module.exports = Docente; 

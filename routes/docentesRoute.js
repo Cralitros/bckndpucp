@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { Docente, DocenteGrados, DocenteLaboral, DocenteCurso,
   DocenteCategoria, DocenteInvestigador, Departamento, Provincia, Distrito, 
-  Login} = require('../models');
+  Login,
+  Nacionalidad} = require('../models');
 
 const fs = require('fs');
 const path = require('path');
@@ -75,7 +76,7 @@ router.get('/contrato/:codigo/:codr', async (req, res) => {
     // Obtener datos del docente (ajusta según tu lógica)
     const docente = await Docente.findOne({
       where: { codigo },
-      include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito]
+      include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad]
     });
 
     if (!docente) {
@@ -263,7 +264,7 @@ router.get('/', async (req, res) => {
   try {
     console.log("7777777777777777777777");
     const docentes = await Docente.findAll(
-      { include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito] }
+      { include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad] }
     );
     console.log("7777777777777777777777");
 
@@ -299,7 +300,7 @@ router.get('/cod/:codigo', async (req, res) => {
     const codigo = req.params.codigo;
     const docentes = await Docente.findAll(
       {
-        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito],
+        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad],
         where: { codigo },
       }
     );
@@ -336,7 +337,7 @@ router.get('/:codigodocentes', async (req, res) => {
     const codigo = req.params.codigodocentes;
     const docentes = await Docente.findAll(
       {
-        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador,  Departamento, Provincia, Distrito],
+        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador,  Departamento, Provincia, Distrito, Nacionalidad],
         where: { codigo },
       }
     );

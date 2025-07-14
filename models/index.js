@@ -48,6 +48,9 @@ Provincia.hasMany(Docente, { foreignKey: 'idProvincia' });
 Docente.belongsTo(Distrito, { foreignKey: 'idDistrito' });
 Distrito.hasMany(Docente, { foreignKey: 'idDistrito' });
 
+Docente.belongsTo(Nacionalidad, { foreignKey: 'idNacionalidad' });
+Nacionalidad.hasMany(Docente, { foreignKey: 'idNacionalidad' });
+
 DocenteInvestigador.belongsTo(Docente, { foreignKey: 'codigoDocente' });
 Docente.hasMany(DocenteInvestigador, { foreignKey: 'codigoDocente' });
 

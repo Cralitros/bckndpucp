@@ -12,6 +12,14 @@ const DocenteGrados = sequelize.define('DocenteGrados', {
         type: DataTypes.JSON,
         allowNull: false
     },
+    maximo_grado:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    pais_grado:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
    /* profesion: {
         type: DataTypes.STRING,
         allowNull: false
