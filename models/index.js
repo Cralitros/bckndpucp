@@ -22,6 +22,7 @@ const Programas = require('./Programas');
 const Login = require('./Login');
 const Nacionalidad = require('./Nacionalidad');
 const Area = require('./Area');
+const DocenteInfo = require('./DocenteInfo');
 
 
 // Define las asociaciones aquí
@@ -60,12 +61,14 @@ Docente.hasMany(DocenteLaboral, { foreignKey: 'codigoDocente' });
 DocenteEncuesta.belongsTo(Docente, { foreignKey: 'codigoDocente' });
 Docente.hasMany(DocenteEncuesta, { foreignKey: 'codigoDocente' });
 
+DocenteInfo.belongsTo(Docente, { foreignKey: 'codigoDocente' });
+Docente.hasMany(DocenteInfo, { foreignKey: 'codigoDocente' });
+
 DocenteEncuesta.belongsTo(Encuesta, { foreignKey: 'codigoEncuesta' });
 Encuesta.hasMany(DocenteEncuesta, { foreignKey: 'codigoEncuesta' });
 
 DocenteEncuesta.belongsTo(Curso, { foreignKey: 'codigoCurso' });
 Curso.hasMany(DocenteEncuesta, { foreignKey: 'codigoCurso' });
-
 
 DocenteCurso.belongsTo(Docente, { foreignKey: 'codigoDocente' });
 Docente.hasMany(DocenteCurso, { foreignKey: 'codigoDocente' });
@@ -98,6 +101,7 @@ module.exports = {
     DocenteGrados,
     DocenteInvestigador,
     DocenteLaboral,
+    DocenteInfo,
     Curso,
     Departamento,
     Provincia,

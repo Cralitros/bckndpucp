@@ -20,6 +20,22 @@ const DocenteGrados = sequelize.define('DocenteGrados', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    bgac:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    bga:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    prestamoc:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    prestamo:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
    /* profesion: {
         type: DataTypes.STRING,
         allowNull: false

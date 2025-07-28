@@ -40,6 +40,34 @@ const DocenteInvestigador = sequelize.define('DocenteInvestigador', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    ri:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    pibpdu:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    gadi:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    sei:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    gadd:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    gadit:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    dfi:{
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
    
 });
 

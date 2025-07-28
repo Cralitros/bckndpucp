@@ -40,6 +40,30 @@ const DocenteCategoria = sequelize.define('DocenteCategoria', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    hContratado:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    hAuxiliar:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    hPrincipal:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    hAsociado:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    dedicacionJubilacion:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    categoriaJubilacion:{
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 
 });
 
