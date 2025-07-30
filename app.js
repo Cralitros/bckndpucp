@@ -17,6 +17,7 @@ app.use(`/docentescategoria`, require('./routes/docentesCategoriaRoute'));
 app.use(`/docentesinvestiga`, require('./routes/docentesInvestigaRoute'));
 app.use(`/docentescurso`, require('./routes/docentesCursoRoute'));
 app.use(`/docentesencuesta`, require('./routes/docentesEncuestaRoute'));
+app.use(`/docentesinfo`, require('./routes/docentesInfoRoute'));
 app.use(`/curso`, require('./routes/cursoRoute'));
 app.use(`/encuesta`, require('./routes/encuestaRoute'));
 //app.use(`/categoria`, require('./routes/condicionRoute'));
