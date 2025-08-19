@@ -24,6 +24,10 @@ const DocenteInfo = sequelize.define('DocenteInfo', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
+    semestre:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     modo_ingreso:{
         type: DataTypes.STRING,
         allowNull: false
