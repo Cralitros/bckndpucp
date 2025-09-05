@@ -16,7 +16,16 @@ const fonts = {
 };
 
 const printer = new pdfMake(fonts);
-
+function obtenerActual(data) {
+    categoria = JSON.parse(data[0].categoria);
+    const seleccionadoMasReciente = categoria
+        .filter(c => c.seleccionada && c.fecha) // solo los seleccionados con fecha
+        .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()) // ordenar descendente por fecha
+    [0];
+    if(!seleccionadoMasReciente)
+        return "NECESITA DATO"
+    return seleccionadoMasReciente.nombre;
+}
 function obtenerIniciales(nombreCompleto) {
     const palabrasIgnoradas = ['de', 'del', 'la', 'las', 'los', 'y', 'e']; // Puedes añadir más si necesitas
     return nombreCompleto
@@ -27,22 +36,20 @@ function obtenerIniciales(nombreCompleto) {
 }
 
 function poner_data(data) {
-    console.log(data);
 
-    if (data.length == 0) {
-        return "profesional "
-    } else {
-        switch (data[0].dataValues.dedicacion) {
-            case 'TPA':
-                return "Tiempo Parcial por Asignaturas (TPA - Por horas) ";
-            case 'TPC':
-                return "Tiempo Parcial Convencional (TPC - medio tiempo) ";
-            case 'TC':
-                return "Tiempo Completo (TC) "
-            default:
-                break;
-        }
+    tiempo = data[0].dedicacion;
+
+    switch (tiempo) {
+        case 'TPA':
+            return "Tiempo Parcial por Asignaturas (TPA - Por horas) ";
+        case 'TPC':
+            return "Tiempo Parcial Convencional (TPC - medio tiempo) ";
+        case 'TC':
+            return "Tiempo Completo (TC) "
+        default:
+            return "NECESITA DATO"
     }
+
 
 }
 
@@ -76,7 +83,7 @@ function fecha_hoy() {
     return fechaFormateada;
 }
 // 2. Función para generar el documento
-function generateUniversityDocument(docenteData, jefeDocente,asistente) {
+function generateUniversityDocument(docenteData, jefeDocente, asistente) {
     //console.log(docenteData.DocenteCategoria[0].dataValues.categoriadap);
     let enunciacion;
     if (docenteData.sexo == 'Masculino') {
@@ -117,11 +124,12 @@ function generateUniversityDocument(docenteData, jefeDocente,asistente) {
                 text: [
                     `${enunciacion} `,
                     { text: `${docenteData.nombres} ${docenteData.apellidos} `, bold: true },
-                    `es docente en la categoría `,
-                    { text: ``, bold: true },
-                    `con dedicación a `,
-                    { text: ``, bold: true },
-                    `del Departamento Académico de Derecho en el área Procesal`,
+                    `se desempeña como profesor`,
+                    { text: `${obtenerActual(docenteData.DocenteCategoria)} `, bold: true },
+                    `con dedicacion a `,
+                    { text: `${poner_data(docenteData.DocenteCategoria)} `, bold: true },
+                    `del `,
+                    { text:`Departamento Académico de Derecho en el área Procesal`, bold: true },
                     '\n\n'
                 ],
                 style: 'bodyText'
@@ -175,7 +183,7 @@ function generateUniversityDocument(docenteData, jefeDocente,asistente) {
                             { text: 'Jefe del Departamento', style: 'signatureTitle' },
                             { text: 'Académico de Derecho', style: 'signatureTitle' },
                             { text: '\n' },
-                            { text: `${obtenerIniciales(jefeDocente.nombres+" "+jefeDocente.apellidos)}/${obtenerIniciales(asistente.nombres+" "+ asistente.apellidos)}`, style: 'initials' }
+                            { text: `${obtenerIniciales(jefeDocente.nombres + " " + jefeDocente.apellidos)}/${obtenerIniciales(asistente.nombres + " " + asistente.apellidos)}`, style: 'initials' }
                         ],
                         alignment: 'center'
                     }
@@ -233,11 +241,11 @@ function generateUniversityDocument(docenteData, jefeDocente,asistente) {
 }
 
 // 3. Exportar función que genera el PDF como buffer
-async function generateContratoDocente(docenteData, jefeDocente,asistente) {
+async function generateContratoDocente(docenteData, jefeDocente, asistente) {
     console.log("data pds");
 
     return new Promise((resolve, reject) => {
-        const docDefinition = generateUniversityDocument(docenteData, jefeDocente,asistente);
+        const docDefinition = generateUniversityDocument(docenteData, jefeDocente, asistente);
         const pdfDoc = printer.createPdfKitDocument(docDefinition);
 
         const chunks = [];
