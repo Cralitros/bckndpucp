@@ -3,7 +3,8 @@ const router = express.Router();
 const { Docente, DocenteGrados, DocenteLaboral, DocenteCurso,
   DocenteCategoria, DocenteInvestigador, Departamento, Provincia, Distrito, 
   Login,
-  Nacionalidad} = require('../models');
+  Nacionalidad,
+  Curso} = require('../models');
 
 const fs = require('fs');
 const path = require('path');
@@ -22,15 +23,26 @@ const { Packer } = require('docx');
 //generar word
 router.get('/contratow/:codigo', async (req, res) => {
   try {
-    
-    
-
     const codigo = req.params.codigo;
 
     const docente = await Docente.findOne({
       where: { codigo },
-      include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito]
+      include: [
+        DocenteGrados, 
+        DocenteLaboral, 
+        DocenteCategoria, 
+        //DocenteCurso, 
+        {
+          model: DocenteCurso,
+          include: [Curso] // 👈 aquí incluyes la relación con la tabla Curso
+        },
+        DocenteInvestigador, 
+        Departamento, 
+        Provincia,
+        Distrito, 
+        Nacionalidad]
     });
+
     console.log('2222222222222');
     console.log(docente);
     
@@ -38,16 +50,20 @@ router.get('/contratow/:codigo', async (req, res) => {
       return res.status(404).json({ error: 'Docente no encontrado' });
     }
 
-    const doc = await generateDocxContrato(docente.dataValues);
+    const doc = await generateDocxContrato(docente.dataValues,"", "");
     const buffer = await Packer.toBuffer(doc);
 
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    es.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     res.setHeader('Content-Disposition', 'attachment; filename=contrato_docente.docx');
+    res.setHeader('Content-Length', buffer.length);
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Pragma', 'no-cache');
     res.send(buffer);
 
   } catch (error) {
     console.error('Error al generar DOCX:', error);
-    res.status(500).json({ error: 'Error al generar el documento' });
+    res.status(500).json({ error: error });
   }
 });
 
@@ -76,9 +92,26 @@ router.get('/contrato/:codigo/:codr', async (req, res) => {
     // Obtener datos del docente (ajusta según tu lógica)
     const docente = await Docente.findOne({
       where: { codigo },
-      include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad]
+      include: [
+        DocenteGrados, 
+        DocenteLaboral, 
+        DocenteCategoria, 
+        //DocenteCurso, 
+        {
+          model: DocenteCurso,
+          include: [Curso] // 👈 aquí incluyes la relación con la tabla Curso
+        },
+        DocenteInvestigador, 
+        Departamento, 
+        Provincia,
+        Distrito, 
+        Nacionalidad]
     });
 
+    console.log('************22222');
+    console.log(docente.DocenteCursos[0].Curso);
+    
+    
     if (!docente) {
       return res.status(404).json({ error: 'Docente no encontrado' });
     }

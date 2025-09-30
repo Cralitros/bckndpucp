@@ -22,7 +22,7 @@ function obtenerActual(data) {
         .filter(c => c.seleccionada && c.fecha) // solo los seleccionados con fecha
         .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()) // ordenar descendente por fecha
     [0];
-    if(!seleccionadoMasReciente)
+    if (!seleccionadoMasReciente)
         return "NECESITA DATO"
     return seleccionadoMasReciente.nombre;
 }
@@ -51,6 +51,44 @@ function poner_data(data) {
     }
 
 
+}
+function getRangoSemestre(data) {
+    docente = data[0];
+
+    // Lista manual de campos de historial
+    const camposFechas = [
+        docente.hContratado,
+        docente.hAuxiliar,
+        docente.hPrincipal,
+        docente.hAsociado
+        // agrega más si los tienes
+    ];
+
+    // Limpiar y convertir a Date
+    const fechas = camposFechas
+        .filter(f => f && !isNaN(Date.parse(f)))  // solo strings de fecha válidos
+        .map(f => new Date(f));                   // convertir a objeto Date
+
+    if (fechas.length === 0) {
+        return { minimo: null, maximo: null };
+    }
+
+    // Calcular mínimo y máximo
+    const minFecha = new Date(Math.min(...fechas.map(f => f.getTime())));
+    const maxFecha = new Date(Math.max(...fechas.map(f => f.getTime())));
+
+    function getSemestre(fecha) {
+        const mes = fecha.getMonth(); // 0 = enero
+        const año = fecha.getFullYear();
+        const semestre = mes < 6 ? "I" : "II";
+        return `${año}-${semestre}`;
+    }
+
+    return getSemestre(minFecha) + " hasta el " + getSemestre(maxFecha);
+    return {
+        minimo: { fecha: minFecha.toISOString(), semestre: getSemestre(minFecha) },
+        maximo: { fecha: maxFecha.toISOString(), semestre: getSemestre(maxFecha) }
+    };
 }
 
 function verificar(data) {
@@ -82,6 +120,45 @@ function fecha_hoy() {
     let fechaFormateada = String(`${dia}/${mes}/${anio}`.toString());
     return fechaFormateada;
 }
+
+function agruparCursosPorCodigo(cursos) {
+    console.log(cursos);
+
+    //return JSON.stringify(cursos);
+
+    const agrupados = {};
+
+    cursos.forEach(dc => {
+        console.log(dc);
+
+        const { codigoCurso, fecha_inicio, fecha_fin, Curso } = dc;
+
+        if (!agrupados[codigoCurso]) {
+            agrupados[codigoCurso] = {
+                codigoCurso,
+                curso: Curso, // info del curso
+                fechas: []    // aquí irán las fechas
+            };
+        }
+
+        agrupados[codigoCurso].fechas.push({
+            inicio: fecha_inicio,
+            fin: fecha_fin
+        });
+    });
+
+    return Object.values(agrupados).map(curso => {
+        const nombreCurso = curso.curso?.dataValues?.nombre || "NombreDesconocido";
+        const codigo = curso.codigoCurso;
+        //const semestres = curso.fechas.map(f => getSemestre(f.inicio));
+
+        return `• ${nombreCurso} (${codigo}) en los semestres: `;
+    }).join("\n");
+    return JSON.stringify(agrupados, null, 2);
+    // lo convertimos a array
+    return Object.values(agrupados);
+}
+
 // 2. Función para generar el documento
 function generateUniversityDocument(docenteData, jefeDocente, asistente) {
     //console.log(docenteData.DocenteCategoria[0].dataValues.categoriadap);
@@ -129,7 +206,33 @@ function generateUniversityDocument(docenteData, jefeDocente, asistente) {
                     `con dedicacion a `,
                     { text: `${poner_data(docenteData.DocenteCategoria)} `, bold: true },
                     `del `,
-                    { text:`Departamento Académico de Derecho en el área Procesal`, bold: true },
+                    { text: `Departamento Académico de Derecho,`, bold: true },
+                    `desde el semestre `,
+                    { text: `${getRangoSemestre(docenteData.DocenteCategoria)}`, bold: true },
+
+                    '\n\n'
+                ],
+                style: 'bodyText'
+            },
+            {
+                text: [
+                    'Durante esas fechas, el profesor ',
+                    { text: `${docenteData.apellidos} `, bold: true },
+                    'tuvo a su cargo  el dictado de los siguiente cursos:',
+                    '\n\n'
+                ],
+                style: 'bodyText'
+            },
+            {
+                text: [
+                    { text: `CURSOS`, bold: true, decoration: 'underline' },
+                    '\n\n'
+                ],
+                style: 'bodyText'
+            },
+            {
+                text: [
+                    { text: `${agruparCursosPorCodigo(docenteData.DocenteCursos)}`, bold: true },
                     '\n\n'
                 ],
                 style: 'bodyText'
