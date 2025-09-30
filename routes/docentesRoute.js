@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { Docente, DocenteGrados, DocenteLaboral, DocenteCurso,
-  DocenteCategoria, DocenteInvestigador, Departamento, Provincia, Distrito, 
+  DocenteCategoria, DocenteInvestigador, Departamento, Provincia, Distrito,
   Login,
   Nacionalidad,
-  Curso} = require('../models');
+  Curso } = require('../models');
 
 const fs = require('fs');
 const path = require('path');
@@ -28,29 +28,29 @@ router.get('/contratow/:codigo', async (req, res) => {
     const docente = await Docente.findOne({
       where: { codigo },
       include: [
-        DocenteGrados, 
-        DocenteLaboral, 
-        DocenteCategoria, 
-        //DocenteCurso, 
+        DocenteGrados,
+        DocenteLaboral,
+        DocenteCategoria,
+        DocenteCurso, 
+
         {
-          model: DocenteCurso,
-          include: [Curso] // 👈 aquí incluyes la relación con la tabla Curso
-        },
-        DocenteInvestigador, 
-        Departamento, 
+          model:Curso
+        }, // 👈 directo, sin DocenteCurso
+        DocenteInvestigador,
+        Departamento,
         Provincia,
-        Distrito, 
+        Distrito,
         Nacionalidad]
     });
 
     console.log('2222222222222');
     console.log(docente);
-    
+
     if (!docente) {
       return res.status(404).json({ error: 'Docente no encontrado' });
     }
 
-    const doc = await generateDocxContrato(docente.dataValues,"", "");
+    const doc = await generateDocxContrato(docente.dataValues, "", "");
     const buffer = await Packer.toBuffer(doc);
 
     es.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
@@ -70,55 +70,57 @@ router.get('/contratow/:codigo', async (req, res) => {
 //generar pdf
 router.get('/contrato/:codigo/:codr', async (req, res) => {
   try {
-    const jefePractica=await Login.findOne({
-      where: { cargo:'1' },
+    const jefePractica = await Login.findOne({
+      where: { cargo: '1' },
     });
     console.log('**********************');
 
     console.log(jefePractica);
 
     const codr = req.params.codr;
-    const asistente=await Login.findOne({
-      where: { dni:codr },
+    const asistente = await Login.findOne({
+      where: { dni: codr },
     });
 
     console.log(asistente);
-    
+
 
     const codigo = req.params.codigo;
     console.log("contrato");
     console.log(codigo);
-    
+
     // Obtener datos del docente (ajusta según tu lógica)
     const docente = await Docente.findOne({
       where: { codigo },
       include: [
-        DocenteGrados, 
-        DocenteLaboral, 
-        DocenteCategoria, 
+        DocenteGrados,
+        DocenteLaboral,
+        DocenteCategoria,
         //DocenteCurso, 
         {
           model: DocenteCurso,
-          include: [Curso] // 👈 aquí incluyes la relación con la tabla Curso
+          include: {
+            model: Curso,
+          } // 👈 aquí incluyes la relación con la tabla Curso
         },
-        DocenteInvestigador, 
-        Departamento, 
+        DocenteInvestigador,
+        Departamento,
         Provincia,
-        Distrito, 
+        Distrito,
         Nacionalidad]
     });
 
     console.log('************22222');
-    console.log(docente.DocenteCursos[0].Curso);
-    
-    
+    console.log(docente.DocenteCursos);
+
+
     if (!docente) {
       return res.status(404).json({ error: 'Docente no encontrado' });
     }
 
     // Generar el PDF
-    const pdfBuffer = await pdfGenerator.generateContratoDocente(docente.dataValues,jefePractica.dataValues, asistente.dataValues);
-    
+    const pdfBuffer = await pdfGenerator.generateContratoDocente(docente.dataValues, jefePractica.dataValues, asistente.dataValues);
+
     // Enviar el PDF como respuesta
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename=contrato_docente.pdf');
@@ -136,8 +138,8 @@ router.get('/report', async (req, res) => {
   try {
 
     let general = await Docente.findAll(
-      { 
-        include: [ Departamento, Provincia, Distrito] 
+      {
+        include: [Departamento, Provincia, Distrito]
       }
 
     );
@@ -146,9 +148,9 @@ router.get('/report', async (req, res) => {
 
     // Extrae los nombres de los campos del primer objeto y excluye 'createdAt' y 'updatedAt'
     const headers = Object.keys(general[0].dataValues).filter(
-      (field) => field !== 'createdAt' && field !== 'updatedAt'&& field !== 'idDepartamento'
-      && field !== 'idProvincia'&& field !== 'idDistrito'&& field !== 'Departamento'
-      && field !== 'Provincium'&& field !== 'Distrito'
+      (field) => field !== 'createdAt' && field !== 'updatedAt' && field !== 'idDepartamento'
+        && field !== 'idProvincia' && field !== 'idDistrito' && field !== 'Departamento'
+        && field !== 'Provincium' && field !== 'Distrito'
     );
 
     console.log(headers);
@@ -169,7 +171,7 @@ router.get('/report', async (req, res) => {
         } else if (header === 'Facultad') {
           return gen.dataValues.Escuela.Facultad.nombre; // 'nombre' es el atributo deseado del objeto Facultad
         } else if (header === 'lugar_nacimiento') {
-          return gen.dataValues.Departamento.nombre+", "+gen.dataValues.Provincium.nombre+", "+gen.dataValues.Distrito.nombre
+          return gen.dataValues.Departamento.nombre + ", " + gen.dataValues.Provincium.nombre + ", " + gen.dataValues.Distrito.nombre
 
         }
         return gen.dataValues[header];
@@ -370,7 +372,7 @@ router.get('/:codigodocentes', async (req, res) => {
     const codigo = req.params.codigodocentes;
     const docentes = await Docente.findAll(
       {
-        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador,  Departamento, Provincia, Distrito, Nacionalidad],
+        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad],
         where: { codigo },
       }
     );
@@ -402,8 +404,8 @@ router.put('/:codigodocentes', async (req, res) => {
 
     console.log(codigo);
     console.log(req.body);
-    
-    
+
+
     // Actualizar el registro de departamento en la base de datos
     await Docente.update(req.body, {
       where: { codigo },

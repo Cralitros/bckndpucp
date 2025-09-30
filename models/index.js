@@ -73,6 +73,9 @@ Curso.hasMany(DocenteEncuesta, { foreignKey: 'codigoCurso' });
 DocenteCurso.belongsTo(Docente, { foreignKey: 'codigoDocente' });
 Docente.hasMany(DocenteCurso, { foreignKey: 'codigoDocente' });
 
+Docente.belongsToMany(Curso, { through: DocenteCurso, foreignKey: 'codigoDocente', otherKey: 'codigoCurso' });
+Curso.belongsToMany(Docente, { through: DocenteCurso, foreignKey: 'codigoCurso', otherKey: 'codigoDocente' });
+
 DocenteCurso.belongsTo(Curso, { foreignKey: 'codigoCurso' });
 Curso.hasMany(DocenteCurso, { foreignKey: 'codigoCurso' });
 

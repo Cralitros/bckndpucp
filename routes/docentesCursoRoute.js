@@ -143,7 +143,10 @@ router.get('/report', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const docenteLaborales = await DocenteCurso.findAll(
-            { include: [Docente] }
+            { 
+              include: [Docente]
+
+            }
         );
         res.json(docenteLaborales);
     } catch (error) {

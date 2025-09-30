@@ -90,6 +90,13 @@ function getRangoSemestre(data) {
         maximo: { fecha: maxFecha.toISOString(), semestre: getSemestre(maxFecha) }
     };
 }
+function getSemestress(fecha) {
+    const d = new Date(fecha);   // convertir string a Date
+    const mes = d.getMonth(); // 0 = enero
+    const año = d.getFullYear();
+    const semestre = mes < 6 ? "I" : "II";
+    return `${año}-${semestre}`;
+}
 
 function verificar(data) {
     console.log("verificar");
@@ -150,9 +157,9 @@ function agruparCursosPorCodigo(cursos) {
     return Object.values(agrupados).map(curso => {
         const nombreCurso = curso.curso?.dataValues?.nombre || "NombreDesconocido";
         const codigo = curso.codigoCurso;
-        //const semestres = curso.fechas.map(f => getSemestre(f.inicio));
+        const semestres = curso.fechas.map(f => getSemestress(f.inicio));
 
-        return `• ${nombreCurso} (${codigo}) en los semestres: `;
+        return `• ${nombreCurso} (${codigo}) en los semestres:  ${semestres.join(", ")}`;
     }).join("\n");
     return JSON.stringify(agrupados, null, 2);
     // lo convertimos a array
