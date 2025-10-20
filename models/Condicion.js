@@ -9,7 +9,7 @@ const Condicion = sequelize.define('Condicion', {
     },
     condicion: {
         type: DataTypes.STRING,
-        allowNull: false
+
     },
     
     

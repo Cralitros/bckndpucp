@@ -11,11 +11,11 @@ const DocenteEncuesta = sequelize.define('DocenteEncuesta', {
     },
     fecha_inicio:{
         type: DataTypes.DATEONLY,
-        allowNull: false
+        
     },
     fecha_fin:{
         type: DataTypes.DATEONLY,
-        allowNull: false
+        
     },
    
 });

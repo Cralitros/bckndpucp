@@ -10,11 +10,11 @@ const Distrito = sequelize.define('Distrito', {
     },
     nombre: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     valor: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
    
 });

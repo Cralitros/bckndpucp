@@ -18,7 +18,7 @@ router.get('/report', async (req, res) => {
         }
       }]
     });
-    console.log(distritos);
+   // console.log(distritos);
 
     const tableBody = [
       ['ID', 'Provincia','Distrito', 'Ubigeo'] // Encabezados de la tabla
@@ -28,7 +28,7 @@ router.get('/report', async (req, res) => {
       tableBody.push([distrito.id.toString(),distrito.Provincium.nombre, distrito.nombre,  distrito.Provincium.Departamento.valor+distrito.Provincium.valor+distrito.valor]);
     });
 
-    console.log(tableBody);
+   // console.log(tableBody);
     
     const fonts = {
       Roboto: {
@@ -42,7 +42,7 @@ router.get('/report', async (req, res) => {
     const printer = new pdfMake(fonts);
     const imagePath = './routes/images/logo.png'; // Ruta de tu imagen
     const imageBase64 = fs.readFileSync(imagePath, 'base64');
-    console.log(imagePath);
+ //   console.log(imagePath);
     
 
     const docDefinition = {

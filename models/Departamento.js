@@ -10,11 +10,11 @@ const Departamento = sequelize.define('Departamento', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   },
   valor:{
     type: DataTypes.STRING,
-    allowNull: false
+    
   }
 });
 

@@ -10,19 +10,19 @@ const Encuesta = sequelize.define('Encuesta', {
     },
     preguntas: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     fecha: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        
     },
     paprobado: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     totalpreguntas: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
 
 

@@ -10,7 +10,6 @@ const Afp = sequelize.define('Afp', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
   },
 
 });

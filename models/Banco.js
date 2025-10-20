@@ -10,7 +10,7 @@ const Banco = sequelize.define('Banco', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
+
   },
 
 });

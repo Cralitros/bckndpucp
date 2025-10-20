@@ -10,27 +10,27 @@ const DocenteCurso = sequelize.define('DocenteCurso', {
     },
     fecha_inicio:{
         type: DataTypes.DATEONLY,
-        allowNull: false
+        
     },
     fecha_fin:{
         type: DataTypes.DATEONLY,
-        allowNull: false
+        
     },
     modalidad: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     tipo: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     tipo_clase: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     estado: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
 
     

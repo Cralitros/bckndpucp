@@ -208,6 +208,10 @@ router.get('/:id', async (req, res) => {
 
 router.get('/lista/:id', async (req, res) => {
   let facultades;
+  console.log("programa************************");
+  
+  console.log(req.params.id);
+  
   try {
     facultades = await Programas.findAll(
       {

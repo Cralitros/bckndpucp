@@ -153,7 +153,7 @@ router.get('/:departamento_id', async (req, res) => {
   const { departamento_id } = req.params;
   let provincias;
 
-  console.log(departamento_id);
+ // console.log(departamento_id);
   try {
     provincias = await Provincia.findAll({
       include:[Departamento, Distrito],

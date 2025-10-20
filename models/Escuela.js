@@ -10,7 +10,7 @@ const Escuela = sequelize.define('Escuela', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   }
 
 });

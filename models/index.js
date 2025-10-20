@@ -23,6 +23,7 @@ const Login = require('./Login');
 const Nacionalidad = require('./Nacionalidad');
 const Area = require('./Area');
 const DocenteInfo = require('./DocenteInfo');
+const Firma = require('./Firma');
 
 
 // Define las asociaciones aquí
@@ -94,6 +95,10 @@ Escuela.hasMany(Programas, { foreignKey: 'idEscuela' });
 Curso.belongsTo(Programas, { foreignKey: 'idPrograma' });
 Programas.hasMany(Curso, { foreignKey: 'idPrograma' });
 
+
+Firma.belongsTo(Login, { foreignKey: 'idLogin' });
+Login.hasMany(Firma, { foreignKey: 'idLogin' });
+
 // Exporta todos los modelos
 module.exports = {
     Docente,
@@ -118,5 +123,6 @@ module.exports = {
     Nacionalidad,
     Afp,
     Area,
-    Plan
+    Plan,
+    Firma
 };

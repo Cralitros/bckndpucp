@@ -32,7 +32,7 @@ app.use(`${nombre_carpeta_Server}bancos`, require('./routes/bancoRoute'));
 app.use(`${nombre_carpeta_Server}afps`, require('./routes/afpRoute'));
 app.use(`${nombre_carpeta_Server}area`, require('./routes/areaRoute'));
 app.use(`${nombre_carpeta_Server}plan`, require('./routes/planRoute'));
-
+app.use(`${nombre_carpeta_Server}firma`, require('./routes/firmaRoute'));
 
 const PORT = process.env.PORT || 3000;
 

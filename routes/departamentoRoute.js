@@ -12,7 +12,7 @@ router.get('/report', async (req, res) => {
   try {
 
     let departamentos = await Departamento.findAll();
-    console.log(departamentos);
+  //  console.log(departamentos);
 
 
     // Extrae los nombres de los campos del primer objeto y excluye 'createdAt' y 'updatedAt'
@@ -21,7 +21,7 @@ router.get('/report', async (req, res) => {
     );
 
     const columnWidths = Array.from({ length: headers.length }, () => 'auto');
-    console.log(headers);
+  //  console.log(headers);
 
     // Convierte los nombres de campos en un array de encabezados
     const tableBody = [
@@ -170,7 +170,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   let departamento;
   try {
-    console.log(req.params);
+   // console.log(req.params);
     departamento = await Departamento.create(req.body);
   } catch (error) {
     res.json(error);
@@ -181,7 +181,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   let departamento;
   try {
-    console.log(req.body);
+  //  console.log(req.body);
     departamento = await Departamento.update(req.body, {
       where: { id: req.params.id }
     });

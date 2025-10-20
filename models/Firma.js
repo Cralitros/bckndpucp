@@ -2,18 +2,17 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const DocenteLaboral = sequelize.define('DocenteLaboral', {
+const Firma = sequelize.define('Firma', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        
     },
-    ratificado: {
-        type: DataTypes.BOOLEAN,
-
-    },
-   
+    firma: {
+        type: DataTypes.TEXT('long'),        
+    }
 });
 
 
-module.exports =DocenteLaboral; 
+module.exports =Firma; 

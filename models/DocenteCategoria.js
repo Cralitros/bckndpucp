@@ -10,59 +10,59 @@ const DocenteCategoria = sequelize.define('DocenteCategoria', {
     },
     tipo: {
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     fecha: {
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     categoria: {
         type: DataTypes.TEXT('long'),
-        allowNull: false
+      
     },
     condiciondap: {
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     dedicacion: {
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     labor: {
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     categoriadap: {
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     ratificado: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     hContratado:{
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     hAuxiliar:{
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     hPrincipal:{
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     hAsociado:{
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     dedicacionJubilacion:{
         type: DataTypes.STRING,
-        allowNull: false
+      
     },
     categoriaJubilacion:{
         type: DataTypes.STRING,
-        allowNull: false
+      
     }
 
 });

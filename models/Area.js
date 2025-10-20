@@ -10,7 +10,7 @@ const Area = sequelize.define('Area', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
+
   },
 
 });

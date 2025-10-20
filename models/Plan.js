@@ -10,15 +10,15 @@ const Plan = sequelize.define('Plan', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   },
   nivel_academico: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   },
   vigencia: {
     type: DataTypes.DATEONLY,
-    allowNull: false
+    
   },
 
 });

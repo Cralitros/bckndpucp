@@ -10,11 +10,11 @@ const Provincia = sequelize.define('Provincia', {
     },
     nombre: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
     valor: {
         type: DataTypes.STRING,
-        allowNull: false
+        
     },
    
 });

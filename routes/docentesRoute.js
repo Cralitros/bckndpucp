@@ -16,6 +16,7 @@ let provincia;
 let distrito;
 
 const pdfGenerator = require('../pdf/pfdDocente'); // Importar el módulo
+const pdfGeneratorContratado = require('../pdf/pfdDocenteContratado'); // Importar el módulo
 
 const { generateDocxContrato } = require('../pdf/wordDocente');
 const { Packer } = require('docx');
@@ -120,6 +121,62 @@ router.get('/contrato/:codigo/:codr', async (req, res) => {
 
     // Generar el PDF
     const pdfBuffer = await pdfGenerator.generateContratoDocente(docente.dataValues, jefePractica.dataValues, asistente.dataValues);
+
+    // Enviar el PDF como respuesta
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=contrato_docente.pdf');
+    res.send(pdfBuffer);
+
+  } catch (error) {
+    console.error('Error al generar contrato:', error);
+    res.status(500).json({ error: 'Error al generar el documento' });
+  }
+
+})
+//pdf contratados
+router.get('/contratocontra/:codigo/:codr', async (req, res) => {
+  try {
+    const jefePractica = await Login.findOne({
+      where: { cargo: '1' },
+    });
+    
+    const codr = req.params.codr;
+    const asistente = await Login.findOne({
+      where: { dni: codr },
+    });
+
+    
+
+    const codigo = req.params.codigo;
+        // Obtener datos del docente (ajusta según tu lógica)
+    const docente = await Docente.findOne({
+      where: { codigo },
+      include: [
+        DocenteGrados,
+        DocenteLaboral,
+        DocenteCategoria,
+        //DocenteCurso, 
+        {
+          model: DocenteCurso,
+          include: {
+            model: Curso,
+          } // 👈 aquí incluyes la relación con la tabla Curso
+        },
+        DocenteInvestigador,
+        Departamento,
+        Provincia,
+        Distrito,
+        Nacionalidad]
+    });
+
+   
+
+    if (!docente) {
+      return res.status(404).json({ error: 'Docente no encontrado' });
+    }
+
+    // Generar el PDF
+    const pdfBuffer = await pdfGeneratorContratado.generateContratoDocente(docente.dataValues, jefePractica.dataValues, asistente.dataValues);
 
     // Enviar el PDF como respuesta
     res.setHeader('Content-Type', 'application/pdf');
@@ -297,13 +354,11 @@ router.get('/report', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    console.log("7777777777777777777777");
+    
     const docentes = await Docente.findAll(
       { include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad] }
     );
-    console.log("7777777777777777777777");
-
-    console.log(docentes);
+    
     // Iterar sobre los docentes para deserializar y buscar lugar_nacimiento
     for (let docente of docentes) {
       if (docente.lugar_nacimiento) {
@@ -321,9 +376,7 @@ router.get('/', async (req, res) => {
         console.log(docente.dataValues.lugarNacimiento);
       }
     }
-    console.log("*********************");
-    console.log(docentes);
-    console.log("*********************");
+    
     res.json(docentes);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -340,9 +393,7 @@ router.get('/cod/:codigo', async (req, res) => {
       }
     );
 
-    console.log("****************************");
-    console.log(docentes);
-    console.log("****************************");
+   
     // Iterar sobre los docentes para deserializar y buscar lugar_nacimiento
     for (let docente of docentes) {
       if (docente.lugar_nacimiento) {
@@ -357,7 +408,7 @@ router.get('/cod/:codigo', async (req, res) => {
           provincia: provincia ? provincia.nombre : null,
           distrito: distrito ? distrito.nombre : null
         };
-        console.log(docente.dataValues.lugarNacimiento);
+        
       }
     }
 
@@ -405,7 +456,7 @@ router.put('/:codigodocentes', async (req, res) => {
     console.log(codigo);
     console.log(req.body);
 
-
+console.log("******************************************************************");
     // Actualizar el registro de departamento en la base de datos
     await Docente.update(req.body, {
       where: { codigo },

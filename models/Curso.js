@@ -13,23 +13,23 @@ const Curso = sequelize.define('Curso', {
     },
     nombre: {
         type: DataTypes.STRING,
-        allowNull: false
+
     },
     semestre: {
         type: DataTypes.STRING,
-        allowNull: false
+
     },
     nivel: {
         type: DataTypes.STRING,
-        allowNull: false
+
     },
     creditos: {
         type: DataTypes.STRING,
-        allowNull: false
+
     },
     areas: {
         type: DataTypes.STRING,
-        allowNull: false
+
     },
 
 });

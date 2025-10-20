@@ -33,6 +33,7 @@ app.use(`/nacionalidad`, require('./routes/nacionalidadRoute'));
 app.use(`/afps`, require('./routes/afpRoute'));
 app.use(`/area`, require('./routes/areaRoute'));
 app.use(`/plan`, require('./routes/planRoute'));
+app.use(`/firma`, require('./routes/firmaRoute'));
 
 
 const PORT = process.env.PORT || 3000;

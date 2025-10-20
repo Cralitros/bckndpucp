@@ -10,7 +10,7 @@ const Facultad = sequelize.define('Facultad', {
   },
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   }
 });
 

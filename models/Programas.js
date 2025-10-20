@@ -10,23 +10,23 @@ const Programas = sequelize.define('Programas', {
   },
   programa: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   },
   gestor: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   },
   director: {
     type: DataTypes.STRING,
-    allowNull: false
+    
   },
   inicio: {
     type: DataTypes.DATEONLY,
-    allowNull: false
+    
   },
   fin: {
     type: DataTypes.DATEONLY,
-    allowNull: false
+    
   }
 });
 
