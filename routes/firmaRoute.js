@@ -26,17 +26,41 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:idLogin', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const idLogin = req.params.idLogin;
+        const idLogin = req.params.id;
         console.log(idLogin);
         
 
         const firma = await Firma.findAll(
             {
-                where: { idLogin },
+                where: { id },
                 include: [{
                     model: Login,
+                }]
+            }
+        );
+        console.log(firma);
+        res.json(firma);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/dni/:dni', async (req, res) => {
+    try {
+        const dni = req.params.dni;
+        console.log(dni);
+        console.log("********************");
+        
+
+        const firma = await Firma.findAll(
+            {
+                
+                include: [{
+                    model: Login,
+                    attributes: ['dni', 'nombres','apellidos'], // solo campos específicos
+                    where: { dni },
                 }]
             }
         );
@@ -60,12 +84,12 @@ router.post('/', async (req, res) => {
 });
 
 // Actualizar un condicion
-router.put('/:idLogin', async (req, res) => {
+router.put('/:id', async (req, res) => {
     let firmas;
     try {
         console.log(req.body);
         firmas = await Firma.update(req.body, {
-            where: { idLogin: req.params.idLogin }
+            where: { id: req.params.id }
         });
     } catch (error) {
         res.json(error);
@@ -74,11 +98,11 @@ router.put('/:idLogin', async (req, res) => {
 });
 
 // Eliminar un condicion
-router.delete('/:idLogin', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     let firmas;
     try {
         firmas = await Firma.destroy({
-            where: { idLogin: req.params.idLogin }
+            where: { id: req.params.id }
         });
     } catch (error) {
         res.json(error);

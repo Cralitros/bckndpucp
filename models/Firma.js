@@ -11,6 +11,9 @@ const Firma = sequelize.define('Firma', {
     },
     firma: {
         type: DataTypes.TEXT('long'),        
+    },
+    iniciales: {
+        type: DataTypes.STRING,        
     }
 });
 

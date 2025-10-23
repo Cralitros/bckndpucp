@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-
+const { Login, Firma } = require('../models');
 const pdfMake = require('pdfmake');
 
 // 1. Configuración inicial
@@ -191,9 +191,37 @@ function agruparCursosPorCodigo(cursos) {
     return Object.values(agrupados);
 }
 
+async function obtenerJefePorDni(dni) {
+  const jefe = await Login.findOne({
+    where: { dni },
+    include: [
+      {
+        model: Firma,
+        attributes: ['firma']
+      }
+    ]
+  });
+
+  if (!jefe) return null;
+
+  return {
+    nombres: jefe.nombres,
+    apellidos: jefe.apellidos,
+    firma: jefe.Firma?.firma || null
+  };
+}
+
+
 // 2. Función para generar el documento
-function generateUniversityDocument(docenteData, jefeDocente, asistente) {
+async function generateUniversityDocument(docenteData, jefeDocente, asistente) {
     //console.log(docenteData.DocenteCategoria[0].dataValues.categoriadap);
+
+    const obtenerIniciales = (nombreCompleto) =>
+        nombreCompleto.split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase();
+
     let enunciacion;
     if (docenteData.sexo == 'Masculino') {
         enunciacion = "El señor";
@@ -205,27 +233,27 @@ function generateUniversityDocument(docenteData, jefeDocente, asistente) {
         pageMargins: [60, 80, 60, 60],
         content: [
             // CABECERA CON IMAGEN Y TEXTO
-        {
-            columns: [
-                {
-                    stack: [
-                        { text: 'DEPARTAMENTO', bold: true, fontSize: 12, color: '#1a237e' },
-                        { text: 'ACADÉMICO DE', bold: true, fontSize: 12, color: '#1a237e' },
-                        { text: 'DERECHO', bold: true, fontSize: 12, color: '#1a237e' }
-                    ],
-                    alignment: 'left',
-                    margin: [0, 0, 0, 20]
-                },
-                {
-                    image: 'public/images/logo.png', // referencia a la imagen (debes definirla en images)
-                    width: 80,
-                    alignment: 'right'
-                }
-            ]
-        },
+            {
+                columns: [
+                    {
+                        stack: [
+                            { text: 'DEPARTAMENTO', bold: true, fontSize: 12, color: '#1a237e' },
+                            { text: 'ACADÉMICO DE', bold: true, fontSize: 12, color: '#1a237e' },
+                            { text: 'DERECHO', bold: true, fontSize: 12, color: '#1a237e' }
+                        ],
+                        alignment: 'left',
+                        margin: [0, 0, 0, 20]
+                    },
+                    {
+                        image: 'public/images/logo.png', // referencia a la imagen (debes definirla en images)
+                        width: 80,
+                        alignment: 'right'
+                    }
+                ]
+            },
 
-        // ESPACIADO DESPUÉS DE LA CABECERA
-        { text: '\n', margin: [0, 20, 0, 20] },
+            // ESPACIADO DESPUÉS DE LA CABECERA
+            { text: '\n', margin: [0, 20, 0, 20] },
             // Encabezado institucional
             {
                 text: 'PONTIFICIA UNIVERSIDAD CATÓLICA DEL PERÚ',
@@ -309,7 +337,7 @@ function generateUniversityDocument(docenteData, jefeDocente, asistente) {
             },
             {
                 text: [
-                    
+
                     { text: `${fecha_hoy_letras()}\n\n`, bold: false }
                 ],
                 alignment: 'right'
@@ -332,6 +360,7 @@ function generateUniversityDocument(docenteData, jefeDocente, asistente) {
                         ],
                         alignment: 'left'
                     }
+                    
                 ],
                 margin: [0, 30, 0, 0]
             }

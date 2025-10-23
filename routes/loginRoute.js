@@ -35,6 +35,21 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/dni/:dni', async (req, res) => {
+    try {
+        const dni = req.params.dni;
+        
+        const condiciones = await Login.findAll(
+            {
+                where: { dni },
+            }
+        );
+        res.json(condiciones);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 // Crear un nuevo condicion
 router.post('/register', async (req, res) => {
