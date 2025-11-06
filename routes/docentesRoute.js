@@ -134,6 +134,16 @@ router.get('/contrato/:codigo/:codr', async (req, res) => {
 
 })
 //pdf contratados
+router.get('/total', async (req, res) => {
+  try {
+    const total = await Login.count();
+    res.json({ total });
+  } catch (error) {
+    console.error('Error al contar AFPs:', error);
+    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
+  }
+});
+
 router.get('/contratocontra/:codigo/:codr', async (req, res) => {
   try {
     const jefePractica = await Login.findOne({

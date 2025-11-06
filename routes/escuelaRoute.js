@@ -8,12 +8,12 @@ const fs = require('fs');
 const path = require('path');
 const pdfMake = require('pdfmake');
 router.get('/report', async (req, res) => {
-  
+
   try {
 
-    let general =  await Escuela.findAll(
+    let general = await Escuela.findAll(
       {
-        include:[Facultad, Programas]
+        include: [Facultad, Programas]
       }
     );
     console.log(general);
@@ -21,7 +21,7 @@ router.get('/report', async (req, res) => {
 
     // Extrae los nombres de los campos del primer objeto y excluye 'createdAt' y 'updatedAt'
     const headers = Object.keys(general[0].dataValues).filter(
-      (field) => field !== 'createdAt' && field !== 'updatedAt'&& field !== 'Programas'
+      (field) => field !== 'createdAt' && field !== 'updatedAt' && field !== 'Programas'
     );
 
     const columnWidths = Array.from({ length: headers.length }, () => 'auto');
@@ -41,7 +41,7 @@ router.get('/report', async (req, res) => {
       }));
     });
 
-    
+
 
     const fonts = {
       Roboto: {
@@ -82,7 +82,7 @@ router.get('/report', async (req, res) => {
           style: 'tableExample',
           table: {
             headerRows: 1,
-            widths:columnWidths,
+            widths: columnWidths,
             body: tableBody
           },
           layout: {
@@ -154,12 +154,22 @@ router.get('/report', async (req, res) => {
   }
 });
 
+router.get('/total', async (req, res) => {
+  try {
+    const total = await Escuela.count();
+    res.json({ total });
+  } catch (error) {
+    console.error('Error al contar AFPs:', error);
+    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
+  }
+});
+
 router.get('/', async (req, res) => {
   let facultades;
   try {
     facultades = await Escuela.findAll(
       {
-        include:[Facultad, Programas]
+        include: [Facultad, Programas]
       }
     );
   } catch (error) {
@@ -172,7 +182,7 @@ router.get('/:id', async (req, res) => {
   try {
     facultades = await Escuela.findAll(
       {
-        include:[Facultad, Programas],
+        include: [Facultad, Programas],
         where: { id: req.params.id }
       }
     );
@@ -187,7 +197,7 @@ router.get('/lista/:id', async (req, res) => {
   try {
     facultades = await Escuela.findAll(
       {
-        include:[Facultad, Programas],
+        include: [Facultad, Programas],
         where: { idFacultad: req.params.id }
       }
     );
