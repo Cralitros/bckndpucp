@@ -10,9 +10,12 @@ const Area = sequelize.define('Area', {
   },
   nombre: {
     type: DataTypes.STRING,
+     allowNull: true
 
   },
 
+}, {
+  tableName: 'areas', // ← coincide con el nombre real en la BD
 });
 
 module.exports = Area;

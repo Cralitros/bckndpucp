@@ -10,23 +10,25 @@ const Encuesta = sequelize.define('Encuesta', {
     },
     preguntas: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     fecha: {
         type: DataTypes.DATEONLY,
-        
+         allowNull: true
     },
     paprobado: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     totalpreguntas: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
 
 
    
+}, {
+  tableName: 'encuesta', // ← coincide con el nombre real en la BD
 });
 
 

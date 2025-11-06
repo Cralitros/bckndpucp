@@ -10,17 +10,19 @@ const Plan = sequelize.define('Plan', {
   },
   nombre: {
     type: DataTypes.STRING,
-    
+     allowNull: true
   },
   nivel_academico: {
     type: DataTypes.STRING,
-    
+     allowNull: true
   },
   vigencia: {
     type: DataTypes.DATEONLY,
-    
+     allowNull: true
   },
 
+}, {
+  tableName: 'plans', // ← coincide con el nombre real en la BD
 });
 
 module.exports = Plan;

@@ -10,31 +10,31 @@ const DocenteGrados = sequelize.define('DocenteGrados', {
     },
     grado: {
         type: DataTypes.JSON,
-        
+         allowNull: true
     },
     maximo_grado:{
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     pais_grado:{
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     bgac:{
         type: DataTypes.BOOLEAN,
-        
+         allowNull: true
     },
     bga:{
         type: DataTypes.TEXT('long'),
-        
+         allowNull: true
     },
     prestamoc:{
         type: DataTypes.BOOLEAN,
-        
+         allowNull: true
     },
     prestamo:{
         type: DataTypes.TEXT('long'),
-        
+         allowNull: true
     },
    /* profesion: {
         type: DataTypes.STRING,
@@ -53,6 +53,8 @@ const DocenteGrados = sequelize.define('DocenteGrados', {
         
     },*/
    
+}, {
+  tableName: 'docentegrados', // ← coincide con el nombre real en la BD
 });
 
 

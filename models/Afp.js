@@ -10,8 +10,11 @@ const Afp = sequelize.define('Afp', {
   },
   nombre: {
     type: DataTypes.STRING,
+    allowNull: true
   },
 
+}, {
+  tableName: 'afps', // ← coincide con el nombre real en la BD
 });
 
 module.exports = Afp;

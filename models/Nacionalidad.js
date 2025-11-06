@@ -10,13 +10,15 @@ const Nacionalidad = sequelize.define('Nacionalidad', {
   },
   nombre: {
     type: DataTypes.STRING,
-    
+     allowNull: true
   },
   pais: {
     type: DataTypes.STRING,
-    
+     allowNull: true
   },
 
+}, {
+  tableName: 'nacionalidads', // ← coincide con el nombre real en la BD
 });
 
 module.exports = Nacionalidad;

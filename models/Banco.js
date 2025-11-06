@@ -10,9 +10,12 @@ const Banco = sequelize.define('Banco', {
   },
   nombre: {
     type: DataTypes.STRING,
+     allowNull: true
 
   },
 
+}, {
+  tableName: 'bancos', // ← coincide con el nombre real en la BD
 });
 
 module.exports = Banco;

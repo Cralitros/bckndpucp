@@ -10,8 +10,10 @@ const Facultad = sequelize.define('Facultad', {
   },
   nombre: {
     type: DataTypes.STRING,
-    
+     allowNull: true
   }
+}, {
+  tableName: 'facultads', // ← coincide con el nombre real en la BD
 });
 
 module.exports = Facultad;

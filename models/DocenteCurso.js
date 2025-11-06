@@ -10,30 +10,32 @@ const DocenteCurso = sequelize.define('DocenteCurso', {
     },
     fecha_inicio:{
         type: DataTypes.DATEONLY,
-        
+         allowNull: true
     },
     fecha_fin:{
         type: DataTypes.DATEONLY,
-        
+         allowNull: true
     },
     modalidad: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     tipo: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     tipo_clase: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     estado: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
 
     
+}, {
+  tableName: 'docentecursos', // ← coincide con el nombre real en la BD
 });
 
 

@@ -10,9 +10,12 @@ const DocenteLaboral = sequelize.define('DocenteLaboral', {
     },
     ratificado: {
         type: DataTypes.BOOLEAN,
+         allowNull: true
 
     },
    
+}, {
+  tableName: 'docentelaborals', // ← coincide con el nombre real en la BD
 });
 
 

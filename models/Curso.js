@@ -13,25 +13,32 @@ const Curso = sequelize.define('Curso', {
     },
     nombre: {
         type: DataTypes.STRING,
+         allowNull: true
 
     },
     semestre: {
         type: DataTypes.STRING,
+         allowNull: true
 
     },
     nivel: {
         type: DataTypes.STRING,
+         allowNull: true
 
     },
     creditos: {
         type: DataTypes.STRING,
+         allowNull: true
 
     },
     areas: {
         type: DataTypes.STRING,
+         allowNull: true
 
     },
 
+}, {
+  tableName: 'cursos', // ← coincide con el nombre real en la BD
 });
 
 

@@ -10,13 +10,17 @@ const Distrito = sequelize.define('Distrito', {
     },
     nombre: {
         type: DataTypes.STRING,
+         allowNull: true
         
     },
     valor: {
         type: DataTypes.STRING,
+         allowNull: true
         
     },
    
+}, {
+  tableName: 'distritos', // ← coincide con el nombre real en la BD
 });
 
 

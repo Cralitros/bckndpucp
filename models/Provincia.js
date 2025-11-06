@@ -10,13 +10,15 @@ const Provincia = sequelize.define('Provincia', {
     },
     nombre: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     valor: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
    
+}, {
+  tableName: 'provincia', // ← coincide con el nombre real en la BD
 });
 
 // Definir la asociación

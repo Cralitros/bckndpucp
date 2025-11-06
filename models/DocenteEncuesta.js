@@ -11,13 +11,15 @@ const DocenteEncuesta = sequelize.define('DocenteEncuesta', {
     },
     fecha_inicio:{
         type: DataTypes.DATEONLY,
-        
+         allowNull: true
     },
     fecha_fin:{
         type: DataTypes.DATEONLY,
-        
+         allowNull: true
     },
    
+}, {
+  tableName: 'docenteencuesta', // ← coincide con el nombre real en la BD
 });
 
 

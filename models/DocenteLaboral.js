@@ -10,41 +10,43 @@ const DocenteLaboral = sequelize.define('DocenteLaboral', {
     },
     trabajo: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     cargo_actual: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     tipo_empresa: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     direccion_empresa: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     telefono_empresa: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     correo_corporativo: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     correo_personal: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     correo_alternativo: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
     contacto: {
         type: DataTypes.STRING,
-        
+         allowNull: true
     },
    
+}, {
+  tableName: 'docentelaborals', // ← coincide con el nombre real en la BD
 });
 
 
