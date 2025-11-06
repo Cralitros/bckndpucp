@@ -25,6 +25,15 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+router.get('/total', async (req, res) => {
+  try {
+    const total = await Firma.count();
+    res.json({ total });
+  } catch (error) {
+    console.error('Error al contar AFPs:', error);
+    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
+  }
+});
 
 router.get('/:id', async (req, res) => {
     try {
@@ -45,6 +54,16 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+});
+
+router.get('/total', async (req, res) => {
+  try {
+    const total = await Firma.count();
+    res.json({ total });
+  } catch (error) {
+    console.error('Error al contar AFPs:', error);
+    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
+  }
 });
 
 router.get('/dni/:dni', async (req, res) => {

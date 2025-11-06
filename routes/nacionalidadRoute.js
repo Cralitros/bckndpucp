@@ -148,7 +148,15 @@ router.get('/', async (req, res) => {
   res.json(nacionalidad);
 });
 
-
+router.get('/total', async (req, res) => {
+  try {
+    const total = await Nacionalidad.count();
+    res.json({ total });
+  } catch (error) {
+    console.error('Error al contar AFPs:', error);
+    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
+  }
+});
 
 router.post('/', async (req, res) => {
   let nacionalidad;

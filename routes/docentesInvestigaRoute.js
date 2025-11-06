@@ -141,6 +141,16 @@ router.get('/report', async (req, res) => {
   });
 
 
+router.get('/total', async (req, res) => {
+  try {
+    const total = await DocenteInvestigador.count();
+    res.json({ total });
+  } catch (error) {
+    console.error('Error al contar AFPs:', error);
+    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
+  }
+});
+
 router.get('/', async (req, res) => {
     try {
         const docenteLaborales = await DocenteInvestigador.findAll(
