@@ -10,7 +10,8 @@ const Firma = sequelize.define('Firma', {
         
     },
     firma: {
-        type: DataTypes.TEXT('long'),        
+        type: DataTypes.TEXT('long'),
+        allowNull: true        
     }
 }, {
   tableName: 'firmas', // ← coincide con el nombre real en la BD

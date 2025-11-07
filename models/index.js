@@ -74,11 +74,12 @@ Curso.hasMany(DocenteEncuesta, { foreignKey: 'codigoCurso' });
 DocenteCurso.belongsTo(Docente, { foreignKey: 'codigoDocente' });
 Docente.hasMany(DocenteCurso, { foreignKey: 'codigoDocente' });
 
-Docente.belongsToMany(Curso, { through: DocenteCurso, foreignKey: 'codigoDocente', otherKey: 'codigoCurso' });
-Curso.belongsToMany(Docente, { through: DocenteCurso, foreignKey: 'codigoCurso', otherKey: 'codigoDocente' });
+//Docente.belongsToMany(Curso, { through: DocenteCurso, foreignKey: 'codigoDocente', otherKey: 'codigoCurso' });
+//Curso.belongsToMany(Docente, { through: DocenteCurso, foreignKey: 'codigoCurso', otherKey: 'codigoDocente' });
 
-DocenteCurso.belongsTo(Curso, { foreignKey: 'codigoCurso' });
-Curso.hasMany(DocenteCurso, { foreignKey: 'codigoCurso' });
+DocenteCurso.belongsTo(Curso, {  foreignKey: 'codigoCurso',  targetKey: 'codigo' /* ← le dice a Sequelize que la PK de Curso es "codigo"*/});
+// No es necesario en hasMany, pero por claridad:
+Curso.hasMany(DocenteCurso, {  foreignKey: 'codigoCurso',  sourceKey: 'codigo'});
 
 /*DocenteCategoria.belongsTo(Condicion, { foreignKey: 'idCondicion' });
 Condicion.hasMany(DocenteCategoria, { foreignKey: 'idCondicion' });*/

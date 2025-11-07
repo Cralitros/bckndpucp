@@ -32,10 +32,10 @@ router.get('/contratow/:codigo', async (req, res) => {
         DocenteGrados,
         DocenteLaboral,
         DocenteCategoria,
-        DocenteCurso, 
+        DocenteCurso,
 
         {
-          model:Curso
+          model: Curso
         }, // 👈 directo, sin DocenteCurso
         DocenteInvestigador,
         Departamento,
@@ -149,16 +149,16 @@ router.get('/contratocontra/:codigo/:codr', async (req, res) => {
     const jefePractica = await Login.findOne({
       where: { cargo: '1' },
     });
-    
+
     const codr = req.params.codr;
     const asistente = await Login.findOne({
       where: { dni: codr },
     });
 
-    
+
 
     const codigo = req.params.codigo;
-        // Obtener datos del docente (ajusta según tu lógica)
+    // Obtener datos del docente (ajusta según tu lógica)
     const docente = await Docente.findOne({
       where: { codigo },
       include: [
@@ -179,7 +179,7 @@ router.get('/contratocontra/:codigo/:codr', async (req, res) => {
         Nacionalidad]
     });
 
-   
+
 
     if (!docente) {
       return res.status(404).json({ error: 'Docente no encontrado' });
@@ -364,11 +364,21 @@ router.get('/report', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    
+
     const docentes = await Docente.findAll(
-      { include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad] }
+      {
+        include: [DocenteGrados, DocenteLaboral, DocenteCategoria,
+          {
+            model: DocenteCurso,
+            include: [{
+              model: Curso,
+              required: false // ← permite que se muestre DocenteCurso aunque no tenga Curso
+            }]
+          }, DocenteInvestigador, Departamento, Provincia,
+          Distrito, Nacionalidad]
+      }
     );
-    
+
     // Iterar sobre los docentes para deserializar y buscar lugar_nacimiento
     for (let docente of docentes) {
       if (docente.lugar_nacimiento) {
@@ -386,7 +396,7 @@ router.get('/', async (req, res) => {
         console.log(docente.dataValues.lugarNacimiento);
       }
     }
-    
+
     res.json(docentes);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -398,12 +408,20 @@ router.get('/cod/:codigo', async (req, res) => {
     const codigo = req.params.codigo;
     const docentes = await Docente.findAll(
       {
-        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad],
+        include: [DocenteGrados, DocenteLaboral,
+          DocenteCategoria, {
+            model: DocenteCurso,
+            include: [{
+              model: Curso,
+              required: false // ← permite que se muestre DocenteCurso aunque no tenga Curso
+            }]
+          }, DocenteInvestigador,
+          Departamento, Provincia, Distrito, Nacionalidad],
         where: { codigo },
       }
     );
 
-   
+
     // Iterar sobre los docentes para deserializar y buscar lugar_nacimiento
     for (let docente of docentes) {
       if (docente.lugar_nacimiento) {
@@ -418,7 +436,7 @@ router.get('/cod/:codigo', async (req, res) => {
           provincia: provincia ? provincia.nombre : null,
           distrito: distrito ? distrito.nombre : null
         };
-        
+
       }
     }
 
@@ -430,11 +448,22 @@ router.get('/cod/:codigo', async (req, res) => {
 
 router.get('/:codigodocentes', async (req, res) => {
   try {
+    console.log("cursos personas********************************");
+    
     const codigo = req.params.codigodocentes;
     const docentes = await Docente.findAll(
       {
-        include: [DocenteGrados, DocenteLaboral, DocenteCategoria, DocenteCurso, DocenteInvestigador, Departamento, Provincia, Distrito, Nacionalidad],
+        include: [DocenteGrados, DocenteLaboral,
+          DocenteCategoria, {
+            model: DocenteCurso,
+            include: [{
+              model: Curso,
+              required: false // ← permite que se muestre DocenteCurso aunque no tenga Curso
+            }]
+          }, DocenteInvestigador,
+          Departamento, Provincia, Distrito, Nacionalidad],
         where: { codigo },
+        logging: console.log // 👈 Verás la consulta SQL
       }
     );
     res.json(docentes);
@@ -466,7 +495,7 @@ router.put('/:codigodocentes', async (req, res) => {
     console.log(codigo);
     console.log(req.body);
 
-console.log("******************************************************************");
+    console.log("******************************************************************");
     // Actualizar el registro de departamento en la base de datos
     await Docente.update(req.body, {
       where: { codigo },
