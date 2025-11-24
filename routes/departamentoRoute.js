@@ -167,6 +167,8 @@ router.get('/', async (req, res) => {
         }]
       }
     );
+    console.log(departamentos);
+    
   } catch (error) {
     res.json(error);
   }

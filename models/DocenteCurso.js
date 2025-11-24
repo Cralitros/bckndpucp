@@ -32,6 +32,14 @@ const DocenteCurso = sequelize.define('DocenteCurso', {
         type: DataTypes.STRING,
          allowNull: true
     },
+    horas_semana: {
+        type: DataTypes.STRING,
+         allowNull: true
+    },
+    horario: {
+        type: DataTypes.STRING,
+         allowNull: true
+    },
 
     
 }, {

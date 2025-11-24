@@ -208,6 +208,10 @@ router.post('/', async (req, res) => {
 router.put('/docente/:codigodocentes', async (req, res) => {
     try {
         const codigoDocente = req.params.codigoDocente;
+        console.log("*****************************");
+        
+        console.log(codigoDocente);
+        
         // Actualizar el registro de departamento en la base de datos
         await DocenteCurso.update(req.body, {
             where: { codigoDocente },
@@ -220,12 +224,19 @@ router.put('/docente/:codigodocentes', async (req, res) => {
     }
 });
 // Actualizar un condicion
-router.put('/curso/:codigoCurso', async (req, res) => {
+router.put('/:codigoCurso', async (req, res) => {
     try {
         const codigoCurso = req.params.codigoCurso;
+         console.log("*****************************");
+        
+        console.log(req.body);
+        
+        console.log(req.body.id);
+        let id=req.body.id;
+        
         // Actualizar el registro de departamento en la base de datos
         await DocenteCurso.update(req.body, {
-            where: { codigoCurso },
+            where: { id },
         });
 
         res.status(201).json("Se actualizo correctamente");
