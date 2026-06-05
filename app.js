@@ -43,7 +43,7 @@ app.get(`/distritos`, (req, res) => {
   res.send('Servidor está funcionando correctamente');
 });
 
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync({ alter: false }).then(() => {
   try {
     app.listen(PORT, () => {
       console.log('Servidor iniciado en http://localhost:3000');
