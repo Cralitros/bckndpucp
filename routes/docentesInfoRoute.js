@@ -1,85 +1,17 @@
+// routes/docentesInfoRoute.js
+// Definición de rutas del recurso Docentes-Info (la lógica vive en
+// controllers/docentesInfoController.js). El orden de registro se mantiene
+// idéntico al original para no alterar el enrutado de Express.
 const express = require('express');
 const router = express.Router();
 
-const { Docente, DocenteInfo } = require('../models');
+const docentesInfoController = require('../controllers/docentesInfoController');
 
-router.get('/total', async (req, res) => {
-  try {
-    const total = await DocenteInfo.count();
-    res.json({ total });
-  } catch (error) {
-    console.error('Error al contar AFPs:', error);
-    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
-  }
-});
-
-router.get('/', async (req, res) => {
-    try {
-        const docenteLaborales = await DocenteInfo.findAll(
-            { include: [Docente] }
-        );
-        res.json(docenteLaborales);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-router.get('/cod/:codigodocentes', async (req, res) => {
-    try {
-        const codigodocente = req.params.codigodocentes;
-        const docenteLaborales = await DocenteInfo.findAll(
-            {
-                include: [Docente],
-                where: { codigodocente },
-            }
-        );
-        res.json(docenteLaborales);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-// Crear un nuevo condicion
-router.post('/', async (req, res) => {
-    try {
-        const docenteLaborales = await DocenteInfo.create(req.body);
-        res.status(201).json(docenteLaborales);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Actualizar un condicion
-router.put('/:codigodocentes', async (req, res) => {
-    try {
-        const codigodocente = req.params.codigodocentes;
-        // Actualizar el registro de departamento en la base de datos
-        await DocenteInfo.update(req.body, {
-            where: { codigodocente },
-        });
-
-        res.status(201).json("Se actualizo correctamente");
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensaje: 'Error al actualizar' });
-    }
-});
-
-// Eliminar un condicion
-router.delete('/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-        // Eliminar el registro de departamento de la base de datos
-        await DocenteInfo.destroy({
-            where: { id },
-        });
-
-        res.status(200).json({ mensaje: 'Registro eliminado' });;
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensaje: 'Error al eliminar' });
-    }
-});
+router.get('/total', docentesInfoController.total);
+router.get('/', docentesInfoController.listar);
+router.get('/cod/:codigodocentes', docentesInfoController.listarPorCodigo);
+router.post('/', docentesInfoController.crear);
+router.put('/:codigodocentes', docentesInfoController.actualizar);
+router.delete('/:id', docentesInfoController.eliminar);
 
 module.exports = router;

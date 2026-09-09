@@ -1,0 +1,167 @@
+// controllers/loginController.js
+// Lógica de negocio del recurso Login. Extraída tal cual de la ruta
+// original (routes/loginRoute.js) para no alterar ningún comportamiento:
+// mismas consultas, mismas respuestas, mismos mensajes y códigos HTTP.
+const { Login } = require('../models');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { jwtSecret } = require('../config');
+
+// GET /
+async function listar(req, res) {
+    try {
+        const condiciones = await Login.findAll();
+        res.json(condiciones);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// GET /total
+async function total(req, res) {
+  try {
+    const total = await Login.count();
+    res.json({ total });
+  } catch (error) {
+    console.error('Error al contar AFPs:', error);
+    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
+  }
+}
+
+// GET /:id
+async function listarPorId(req, res) {
+    try {
+        const id = req.params.id;
+
+        const condiciones = await Login.findAll(
+            {
+                where: { id },
+            }
+        );
+        res.json(condiciones);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// GET /dni/:dni
+async function listarPorDni(req, res) {
+    try {
+        const dni = req.params.dni;
+
+        const condiciones = await Login.findAll(
+            {
+                where: { dni },
+            }
+        );
+        res.json(condiciones);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// POST /register
+async function registrar(req, res) {
+    const { dni, password, nivel, rol,
+        nombres, apellidos, email, cargo } = req.body;
+    console.log(req.body);
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = await Login.create({
+            dni,
+            password: hashedPassword,
+            nivel,
+            rol,
+            nombres,
+            apellidos,
+            email,
+            cargo
+         });
+        res.status(201).json(newUser);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// POST /login
+async function iniciarSesion(req, res) {
+    const { dni, password } = req.body;
+    try {
+        const user = await Login.findOne({ where: { dni } });
+        if (!user) {
+            return res.status(400).json({ error: 'Usuario no encontrado' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Contraseña incorrecta' });
+        }
+
+        const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '1h' });
+        res.status(200).json({ token:token,
+            nivel:user.nivel,
+            dni:user.dni,
+            rol:user.rol,
+            nombres:user.nombres,
+            apellidos:user.apellidos,
+            email:user.email,
+            cargo:user.cargo
+         });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// PUT /:id
+async function actualizar(req, res) {
+    try {
+        const id = req.params.id;
+        let {nivel, dni, nombres,apellidos,email,cargo, password}=req.body;
+        console.log(req.body);
+
+        let hashedPassword;
+        console.log("****");
+
+        if(password!=''){
+            console.log("****111111111");
+            password = await bcrypt.hash(password, 10);
+        }
+        console.log("****22222");
+        // Actualizar el registro de departamento en la base de datos
+        await Login.update({nivel, dni, nombres,apellidos,email,cargo, password}, {
+            where: { id },
+        });
+
+        res.status(201).json("Se actualizo correctamente");
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: 'Error al actualizar' });
+    }
+}
+
+// DELETE /:id
+async function eliminar(req, res) {
+    try {
+        const id = req.params.id;
+        await Login.destroy({
+            where: { id },
+        });
+
+        res.status(200).json({ mensaje: 'Registro eliminado' });;
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: 'Error al eliminar' });
+    }
+}
+
+module.exports = {
+  listar,
+  total,
+  listarPorId,
+  listarPorDni,
+  registrar,
+  iniciarSesion,
+  actualizar,
+  eliminar,
+};

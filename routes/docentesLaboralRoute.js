@@ -1,120 +1,18 @@
+// routes/docentesLaboralRoute.js
+// Definición de rutas del recurso DocenteLaborales (la lógica vive en
+// controllers/docentesLaboralController.js). El orden de registro se mantiene
+// idéntico al original para no alterar el enrutado de Express.
 const express = require('express');
 const router = express.Router();
 
-const { Docente, DocenteLaboral } = require('../models');
-const { enviarReporteTabla } = require('../pdf/reportesTabla');
-router.get('/report', async (req, res) => {
+const docentesLaboralController = require('../controllers/docentesLaboralController');
 
-  try {
-
-    let general = await DocenteLaboral.findAll();
-    console.log(general);
-
-
-    // Extrae los nombres de los campos del primer objeto y excluye 'createdAt' y 'updatedAt'
-    const headers = Object.keys(general[0].dataValues).filter(
-      (field) => field !== 'createdAt' && field !== 'updatedAt'
-    );
-
-    const columnWidths = Array.from({ length: headers.length }, () => 'auto');
-    console.log(headers);
-
-    // Convierte los nombres de campos en un array de encabezados
-    const tableBody = [
-      headers // Usamos los nombres de los campos como encabezados
-    ];
-    general.forEach(gen => {
-      tableBody.push(headers.map(header => gen.dataValues[header]));
-    });
-
-    await enviarReporteTabla(res, {
-      titulo: "REPORTE DE DOCENTE CATEGORIAS",
-      subtitulo: "Lista de docentes por categoria",
-      tableBody,
-      columnWidths,
-    });
-  } catch (error) {
-    res.json(error);
-  }
-});
-
-router.get('/total', async (req, res) => {
-  try {
-    const total = await DocenteLaboral.count();
-    res.json({ total });
-  } catch (error) {
-    console.error('Error al contar AFPs:', error);
-    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
-  }
-});
-
-router.get('/', async (req, res) => {
-  try {
-    const docenteLaborales = await DocenteLaboral.findAll(
-      { include: [Docente] }
-    );
-    res.json(docenteLaborales);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-router.get('/cod/:codigodocentes', async (req, res) => {
-  try {
-    const codigoDocente = req.params.codigodocentes;
-    const docenteLaborales = await DocenteLaboral.findAll(
-      {
-        include: [Docente],
-        where: { codigoDocente },
-      }
-    );
-    res.json(docenteLaborales);
-  } catch (error) {
-    res.status(500).json({ length: 0 });
-  }
-});
-
-
-// Crear un nuevo condicion
-router.post('/', async (req, res) => {
-  try {
-    const docenteLaborales = await DocenteLaboral.create(req.body);
-    res.status(201).json(docenteLaborales);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Actualizar un condicion
-router.put('/:codigodocentes', async (req, res) => {
-  try {
-    const codigoDocente = req.params.codigodocentes;
-    // Actualizar el registro de departamento en la base de datos
-    await DocenteLaboral.update(req.body, {
-      where: { codigoDocente },
-    });
-
-    res.status(201).json("Se actualizo correctamente");
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al actualizar' });
-  }
-});
-
-// Eliminar un condicion
-router.delete('/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    // Eliminar el registro de departamento de la base de datos
-    await DocenteLaboral.destroy({
-      where: { id },
-    });
-
-    res.status(200).json({ mensaje: 'Registro eliminado' });;
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al eliminar' });
-  }
-});
+router.get('/report', docentesLaboralController.reporte);
+router.get('/total', docentesLaboralController.total);
+router.get('/', docentesLaboralController.listar);
+router.get('/cod/:codigodocentes', docentesLaboralController.listarPorCodigoDocente);
+router.post('/', docentesLaboralController.crear);
+router.put('/:codigodocentes', docentesLaboralController.actualizar);
+router.delete('/:id', docentesLaboralController.eliminar);
 
 module.exports = router;

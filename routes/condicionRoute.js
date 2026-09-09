@@ -1,90 +1,17 @@
+// routes/condicionRoute.js
+// Definición de rutas del recurso Condición (la lógica vive en
+// controllers/condicionController.js). El orden de registro se mantiene
+// idéntico al original para no alterar el enrutado de Express.
 const express = require('express');
 const router = express.Router();
-const {Condicion}  = require('../models');
 
-/*router.get('/', condicionController.encontrarTodo);
-router.get('/:id', condicionController.encontrarTodo);
+const condicionController = require('../controllers/condicionController');
+
+router.get('/', condicionController.listar);
+router.get('/total', condicionController.total);
+router.get('/:id', condicionController.listarPorId);
 router.post('/', condicionController.crear);
 router.put('/:id', condicionController.actualizar);
-router.delete('/:id', condicionController.eliminar);*/
-// otras rutas
-// Obtener todos los condicions
-router.get('/', async (req, res) => {
-    let condiciones;
-    try {
-        condiciones = await Condicion.findAll();
-        res.json(condiciones);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-router.get('/total', async (req, res) => {
-  try {
-    const total = await Condicion.count();
-    res.json({ total });
-  } catch (error) {
-    console.error('Error al contar AFPs:', error);
-    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
-  }
-});
-
-
-router.get('/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-        const condiciones = await Condicion.findAll(
-            {
-                where: { id },
-            }
-        );
-        res.json(condiciones);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-// Crear un nuevo condicion
-router.post('/', async (req, res) => {
-    try {
-        const condiciones = await Condicion.create(req.body);
-        res.status(201).json(condiciones);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Actualizar un condicion
-router.put('/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-        // Actualizar el registro de departamento en la base de datos
-        await Condicion.update(req.body, {
-            where: { id },
-        });
-
-        res.status(201).json("Se actualizo correctamente");
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensaje: 'Error al actualizar' });
-    }
-});
-
-// Eliminar un condicion
-router.delete('/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-        await Condicion.destroy({
-            where: { id },
-        });
-
-        res.status(200).json({ mensaje: 'Registro eliminado' });;
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensaje: 'Error al eliminar' });
-    }
-});
+router.delete('/:id', condicionController.eliminar);
 
 module.exports = router;
-
-
