@@ -40,3 +40,12 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# npm local cache (usada cuando el cache global no esta disponible)
+.npm-cache/
+

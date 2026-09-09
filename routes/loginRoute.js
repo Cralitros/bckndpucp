@@ -3,6 +3,7 @@ const router = express.Router();
 const { Login } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { jwtSecret } = require('../config');
 
 /*router.get('/', condicionController.encontrarTodo);
 router.get('/:id', condicionController.encontrarTodo);
@@ -99,7 +100,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Contraseña incorrecta' });
         }
 
-        const token = jwt.sign({ id: user.id }, 'secretkey', { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '1h' });
         res.status(200).json({ token:token, 
             nivel:user.nivel,
             dni:user.dni,
