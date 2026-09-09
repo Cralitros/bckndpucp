@@ -54,7 +54,7 @@ router.get('/contratow/:codigo', async (req, res) => {
     const doc = await generateDocxContrato(docente.dataValues, "", "");
     const buffer = await Packer.toBuffer(doc);
 
-    es.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     res.setHeader('Content-Disposition', 'attachment; filename=contrato_docente.docx');
     res.setHeader('Content-Length', buffer.length);
     res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');

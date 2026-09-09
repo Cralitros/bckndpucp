@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { Firma, Login } = require('../models');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 /*router.get('/', condicionController.encontrarTodo);
 router.get('/:id', condicionController.encontrarTodo);
@@ -43,7 +41,7 @@ router.get('/:id', async (req, res) => {
 
         const firma = await Firma.findAll(
             {
-                where: { id },
+                where: { idLogin },
                 include: [{
                     model: Login,
                 }]
@@ -54,16 +52,6 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
-
-router.get('/total', async (req, res) => {
-  try {
-    const total = await Firma.count();
-    res.json({ total });
-  } catch (error) {
-    console.error('Error al contar AFPs:', error);
-    res.status(500).json({ error: 'Error al obtener el total de AFPs' });
-  }
 });
 
 router.get('/dni/:dni', async (req, res) => {

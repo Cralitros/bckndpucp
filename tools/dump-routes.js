@@ -56,6 +56,7 @@ for (const [mount, file] of mounts) {
 // Ruta de prueba de app.js (GET /distritos y GET /distritos/  -> queda detrás del router; igual se lista)
 rows.push('GET     ' + `${prefix}/distritos`.replace(/\/{2,}/g, '/') + '  <- app.js health check (tras router, inalcanzable si router responde)');
 
-rows.sort();
-console.log(`Total rutas (sin health): ${rows.length - 1}`);
-for (const r of rows) console.log(r);
+// Deduplicar: solo cuentan endpoints distintos (evita handlers repetidos muertos)
+const unique = [...new Set(rows)].sort();
+console.log(`Total rutas (sin health): ${unique.length - 1}`);
+for (const r of unique) console.log(r);

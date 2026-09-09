@@ -1,4 +1,4 @@
-﻿Total rutas (sin health): 169
+﻿Total rutas (sin health): 167
 DELETE /afps/:id
 DELETE /area/:id
 DELETE /bancos/:id
@@ -83,7 +83,6 @@ GET    /docenteslaboral/total
 GET    /encuesta/
 GET    /encuesta/:id
 GET    /encuesta/report
-GET    /encuesta/report
 GET    /encuesta/total
 GET    /escuela/
 GET    /escuela/:id
@@ -98,7 +97,6 @@ GET    /facultad/total
 GET    /firma/
 GET    /firma/:id
 GET    /firma/dni/:dni
-GET    /firma/total
 GET    /firma/total
 GET    /login/
 GET    /login/:id
@@ -128,14 +126,6 @@ POST   /departamentos/
 POST   /distritos/
 POST   /docentes/
 POST   /docentescategoria/
-node : (node:6824) Warning: `--localstorage-file` was provided without a valid path
-En línea: 1 Carácter: 129
-+ ... xt.UTF8Encoding]::new($false); node tools/dump-routes.js 2>&1 | Out-F ...
-+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: ((node:6824) War...ut a valid path:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
-(Use `node --trace-warnings ...` to show where the warning was created)
 POST   /docentescurso/
 POST   /docentesencuesta/
 POST   /docentesgrado/
