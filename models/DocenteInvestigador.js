@@ -68,6 +68,14 @@ const DocenteInvestigador = sequelize.define('DocenteInvestigador', {
         type: DataTypes.TEXT('long'),
          allowNull: true
     },
+    condicion: {
+        type: DataTypes.STRING,
+         allowNull: true
+    },
+    semestresInvestigacion: {
+        type: DataTypes.TEXT('long'),
+        allowNull: true
+    },
    
 }, {
   tableName: 'docenteinvestigadors', // ← coincide con el nombre real en la BD

@@ -203,12 +203,12 @@ router.put('/:codigodocentes', async (req, res) => {
 });
 
 // Eliminar un condicion
-router.delete('/:codigodocentes', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const codigoDocente = req.params.codigodocentes;
+    const id = req.params.id;
     // Eliminar el registro de departamento de la base de datos
     await DocenteLaboral.destroy({
-      where: { codigoDocente },
+      where: { id },
     });
 
     res.status(200).json({ mensaje: 'Registro eliminado' });;

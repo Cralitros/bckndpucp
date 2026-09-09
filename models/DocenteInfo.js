@@ -16,6 +16,26 @@ const DocenteInfo = sequelize.define('DocenteInfo', {
         type: DataTypes.STRING,
          allowNull: true
     },
+    estado:{//nuevo
+        type: DataTypes.STRING,
+         allowNull: true
+    },
+    lineaActual:{//nuevo
+        type: DataTypes.STRING,
+         allowNull: true
+    },
+    tipoDocente:{//nuevo
+        type: DataTypes.STRING,
+         allowNull: true
+    },
+    fechaVigencia:{//nuevo
+        type: DataTypes.STRING,
+         allowNull: true
+    },
+    resolucionVigente:{//nuevo
+        type: DataTypes.STRING,
+         allowNull: true
+    },
     inicio_dictado: {
         type: DataTypes.DATEONLY,
          allowNull: true
