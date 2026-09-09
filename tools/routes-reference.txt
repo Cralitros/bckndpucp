@@ -1,4 +1,4 @@
-﻿Total rutas (sin health): 167
+﻿Total rutas: 167
 DELETE /afps/:id
 DELETE /area/:id
 DELETE /bancos/:id
@@ -22,7 +22,6 @@ DELETE /nacionalidad/:id
 DELETE /plan/:id
 DELETE /programa/:id
 DELETE /provincias/:id
-GET     /distritos  <- app.js health check (tras router, inalcanzable si router responde)
 GET    /afps/
 GET    /afps/report
 GET    /afps/total

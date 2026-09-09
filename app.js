@@ -1,57 +1,89 @@
+// app.js — Punto de entrada único del backend.
+// Reemplaza a los antiguos app.js / app_production.js / "app_production unsa.js":
+// el comportamiento de cada entorno se controla con variables de entorno (.env):
+//   PORT, BASE_PATH (prefijo de URL, ej. /backendpucp/), CORS_ORIGIN, DB_SYNC...
 const express = require('express');
+const cors = require('cors');
+const config = require('./config');
 const sequelize = require('./config/database');
-const cors = require('cors'); 
-const jwt = require('jsonwebtoken');
+
 const app = express();
 
-let nombre_carpeta_Server="";
 app.use(express.json());
-// Habilitar CORS
-app.use(cors());
 
+// CORS: si CORS_ORIGIN es "*" se permite todo (comportamiento original);
+// si se lista un origen concreto (o varios separados por coma), se restringe.
+const origins = config.corsOrigin;
+app.use(cors(origins.includes('*') ? {} : { origin: origins }));
 
-app.use(`/docentes`, require('./routes/docentesRoute'));
-app.use(`/docenteslaboral`, require('./routes/docentesLaboralRoute'));
-app.use(`/docentesgrado`, require('./routes/docentesGradoRoute'));
-app.use(`/docentescategoria`, require('./routes/docentesCategoriaRoute'));
-app.use(`/docentesinvestiga`, require('./routes/docentesInvestigaRoute'));
-app.use(`/docentescurso`, require('./routes/docentesCursoRoute'));
-app.use(`/docentesencuesta`, require('./routes/docentesEncuestaRoute'));
-app.use(`/docentesinfo`, require('./routes/docentesInfoRoute'));
-app.use(`/curso`, require('./routes/cursoRoute'));
-app.use(`/encuesta`, require('./routes/encuestaRoute'));
-//app.use(`/categoria`, require('./routes/condicionRoute'));
-app.use(`/departamentos`, require('./routes/departamentoRoute'));
-app.use(`/provincias`, require('./routes/provinciaRoute'));
-app.use(`/distritos`, require('./routes/distritoRoute'));
-app.use(`/facultad`, require('./routes/facultadRoute'));
-app.use(`/escuela`, require('./routes/escuelaRoute'));
-app.use(`/programa`, require('./routes/programaRoute'));
-app.use(`/login`, require('./routes/loginRoute'));
-app.use(`/bancos`, require('./routes/bancoRoute'));
-app.use(`/nacionalidad`, require('./routes/nacionalidadRoute'));
-app.use(`/afps`, require('./routes/afpRoute'));
-app.use(`/area`, require('./routes/areaRoute'));
-app.use(`/plan`, require('./routes/planRoute'));
-app.use(`/firma`, require('./routes/firmaRoute'));
+const basePath = config.basePath; // '' en local, '/backendpucp' en producción con subcarpeta
 
+// ---------------------------------------------------------------
+// Registro de rutas (mismo conjunto que el app.js original de desarrollo)
+// ---------------------------------------------------------------
+app.use(`${basePath}/docentes`, require('./routes/docentesRoute'));
+app.use(`${basePath}/docenteslaboral`, require('./routes/docentesLaboralRoute'));
+app.use(`${basePath}/docentesgrado`, require('./routes/docentesGradoRoute'));
+app.use(`${basePath}/docentescategoria`, require('./routes/docentesCategoriaRoute'));
+app.use(`${basePath}/docentesinvestiga`, require('./routes/docentesInvestigaRoute'));
+app.use(`${basePath}/docentescurso`, require('./routes/docentesCursoRoute'));
+app.use(`${basePath}/docentesencuesta`, require('./routes/docentesEncuestaRoute'));
+app.use(`${basePath}/docentesinfo`, require('./routes/docentesInfoRoute'));
+app.use(`${basePath}/curso`, require('./routes/cursoRoute'));
+app.use(`${basePath}/encuesta`, require('./routes/encuestaRoute'));
+app.use(`${basePath}/departamentos`, require('./routes/departamentoRoute'));
+app.use(`${basePath}/provincias`, require('./routes/provinciaRoute'));
+app.use(`${basePath}/distritos`, require('./routes/distritoRoute'));
+app.use(`${basePath}/facultad`, require('./routes/facultadRoute'));
+app.use(`${basePath}/escuela`, require('./routes/escuelaRoute'));
+app.use(`${basePath}/programa`, require('./routes/programaRoute'));
+app.use(`${basePath}/login`, require('./routes/loginRoute'));
+app.use(`${basePath}/bancos`, require('./routes/bancoRoute'));
+app.use(`${basePath}/nacionalidad`, require('./routes/nacionalidadRoute'));
+app.use(`${basePath}/afps`, require('./routes/afpRoute'));
+app.use(`${basePath}/area`, require('./routes/areaRoute'));
+app.use(`${basePath}/plan`, require('./routes/planRoute'));
+app.use(`${basePath}/firma`, require('./routes/firmaRoute'));
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.port;
 
-// Prueba de funcionamiento
-app.get(`/distritos`, (req, res) => {
+// Prueba de funcionamiento (mismo comportamiento que el app.js original:
+// se registra después de las rutas, por lo que /distritos lo responde el router).
+app.get(`${basePath}/distritos`, (req, res) => {
   res.send('Servidor está funcionando correctamente');
 });
 
-sequelize.sync({ alter: false }).then(() => {
+// ---------------------------------------------------------------------------
+// Sincronización de modelos con la BD. Controlada por DB_SYNC:
+//   none  -> no se toca la BD (recomendado en producción)
+//   alter -> ALTER TABLE (peligroso: modifica el esquema)
+//   force -> DROP + CREATE (¡borra datos! solo desarrollo)
+// El app.js original sincronizaba con alter:false y los archivos de producción
+// con alter:true / force:false; con .env se replica cualquiera de esos modos.
+// ---------------------------------------------------------------------------
+async function start() {
   try {
+    if (config.dbSync !== 'none') {
+      await sequelize.sync(
+        config.dbSync === 'force'
+          ? { force: true }
+          : config.dbSync === 'alter'
+            ? { alter: true }
+            : {}
+      );
+    } else {
+      await sequelize.authenticate();
+    }
+
     app.listen(PORT, () => {
-      console.log('Servidor iniciado en http://localhost:3000');
+      console.log(`Servidor iniciado en http://localhost:${PORT}${basePath}`);
     });
   } catch (error) {
-    console.log(error);
+    console.error('No se pudo conectar a la base de datos:', error);
+    process.exit(1);
   }
-  
-}).catch(err => {
-  console.error('No se pudo conectar a la base de datos:', err);
-});
+}
+
+start();
+
+module.exports = app;
