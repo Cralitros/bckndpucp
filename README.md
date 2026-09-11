@@ -1,5 +1,5 @@
 # bckndpucp — Backend de gestión de docentes (PUCP)
-
+# esto es una prueba quiero saber si se actualiza
 API Node.js/Express + Sequelize (MySQL) para la administración de docentes,
 cursos, encuestas, grados académicos y generación de documentos (PDF/DOCX).
 
