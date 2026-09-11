@@ -19,6 +19,32 @@ app.use(cors(origins.includes('*') ? {} : { origin: origins }));
 
 const basePath = config.basePath; // '' en local, '/backendpucp' en producción con subcarpeta
 
+// ---------------------------------------------------------------------------
+// Comprobación de despliegue (visible en el navegador).
+//   https://derechopucp.com/backendPucp2/version
+// Devuelve qué versión está corriendo AHORA en el servidor. El archivo
+// version.json lo genera el despliegue (GitHub Actions) en cada subida: si el
+// commit que ves aquí no es el último que subiste, el despliegue no llegó.
+// Se registra ANTES de los routers para que nada lo tape.
+// ---------------------------------------------------------------------------
+const fs = require('fs');
+const path = require('path');
+
+app.get(`${basePath}/version`, (req, res) => {
+  let datos = { commit: 'desconocido', nota: 'No hay version.json en el servidor.' };
+  try {
+    datos = JSON.parse(fs.readFileSync(path.join(__dirname, 'version.json'), 'utf8'));
+  } catch (error) {
+    datos.nota = `No se pudo leer version.json: ${error.message}`;
+  }
+  res.json({
+    ...datos,
+    basePath,
+    node: process.version,
+    consultado: new Date().toISOString(),
+  });
+});
+
 // ---------------------------------------------------------------
 // Registro de rutas (mismo conjunto que el app.js original de desarrollo)
 // ---------------------------------------------------------------

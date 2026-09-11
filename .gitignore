@@ -49,3 +49,7 @@ Thumbs.db
 # npm local cache (usada cuando el cache global no esta disponible)
 .npm-cache/
 
+# Lo genera el despliegue (GitHub Actions): no se versiona nunca.
+# Se puede ver en el navegador en <url>/version
+version.json
+

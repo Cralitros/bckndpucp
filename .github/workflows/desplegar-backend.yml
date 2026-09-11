@@ -45,6 +45,29 @@ jobs:
           esac
           echo "carpeta=$CARPETA" >> "$GITHUB_OUTPUT"
 
+      - name: Generar version.json (se ve en <url>/version)
+        env:
+          MENSAJE: ${{ github.event.head_commit.message }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+
+          lineas = (os.environ.get("MENSAJE") or "").strip().splitlines()
+          sha = os.environ["GITHUB_SHA"]
+          datos = {
+              "commit": sha,
+              "commitCorto": sha[:7],
+              "rama": os.environ.get("GITHUB_REF_NAME", ""),
+              "mensaje": lineas[0] if lineas else "",
+              "desplegado": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+          }
+          with open("version.json", "w", encoding="utf-8") as f:
+              json.dump(datos, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          print(open("version.json", encoding="utf-8").read())
+          PY
+
       - name: Subir el código por FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
@@ -78,6 +101,24 @@ jobs:
           local-dir: ./.deploy/
           server-dir: ${{ steps.config.outputs.carpeta }}tmp/
           dangerous-clean-slate: false
+
+      - name: Comprobar qué quedó en el servidor (listado por FTP)
+        # Sólo informa: si el servidor no permite listar, no rompe el despliegue.
+        continue-on-error: true
+        env:
+          SERVIDOR: ${{ secrets.FTP_SERVER }}
+          USUARIO: ${{ secrets.FTP_USUARIO }}
+          CLAVE: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          echo "Carpeta destino en el servidor: ${{ steps.config.outputs.carpeta }}"
+          echo "(esa es la ruta que debes abrir en cPanel > File Manager)"
+          echo "--- contenido (fecha, tamaño, nombre) ---"
+          curl -s --user "$USUARIO:$CLAVE" \
+            "ftp://$SERVIDOR${{ steps.config.outputs.carpeta }}" | head -80
+          echo "--- marca de despliegue ---"
+          curl -s --user "$USUARIO:$CLAVE" \
+            "ftp://$SERVIDOR${{ steps.config.outputs.carpeta }}" \
+            | grep -E 'version\.json|README\.md' || echo "(no se pudo listar por FTP)"
 
       - name: Aviso si cambiaron las dependencias
         run: |
