@@ -1,6 +1,6 @@
 name: Desplegar backend
 
-# Se ejecuta al subir cambios a la rama main (o a mano desde la pestaña Actions).
+# Se ejecuta al subir cambios a la rama main (o a mano desde la pestaÃ±a Actions).
 on:
   push:
     branches: [main]
@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar el código
+      - name: Descargar el cÃ³digo
         uses: actions/checkout@v4
 
-      - name: Comprobar la configuración (Secrets)
+      - name: Comprobar la configuraciÃ³n (Secrets)
         env:
           SERVIDOR: ${{ secrets.FTP_SERVER }}
           USUARIO: ${{ secrets.FTP_USUARIO }}
@@ -32,24 +32,24 @@ jobs:
             echo "Revisa: Settings > Secrets and variables > Actions"
             exit 1
           fi
-          echo "Los 4 secrets están definidos ✅"
+          echo "Los 4 secrets estÃ¡n definidos âœ…"
           case "$CARPETA" in
-            */) echo "::warning::FTP_CARPETA_BACK termina en '/'. Quítale la barra final: se le añade '/tmp/' para el reinicio y quedaría una barra doble." ;;
-            /*) echo "Carpeta destino: ruta absoluta ✅ (recuerda: SIN barra final)" ;;
-            *)  echo "::warning::FTP_CARPETA_BACK no empieza por '/'. Si tu cuenta FTP está restringida a una carpeta, usa la ruta relativa que ves en el File Manager." ;;
+            */) echo "::warning::FTP_CARPETA_BACK termina en '/'. QuÃ­tale la barra final: se le aÃ±ade '/tmp/' para el reinicio y quedarÃ­a una barra doble." ;;
+            /*) echo "Carpeta destino: ruta absoluta âœ… (recuerda: SIN barra final)" ;;
+            *)  echo "::warning::FTP_CARPETA_BACK no empieza por '/'. Si tu cuenta FTP estÃ¡ restringida a una carpeta, usa la ruta relativa que ves en el File Manager." ;;
           esac
 
-      - name: Subir el código por FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Subir el cÃ³digo por FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USUARIO }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: ${{ secrets.FTP_CARPETA_BACK }}
-          # NUNCA borrar ni pisar lo que vive sólo en el servidor:
+          # NUNCA borrar ni pisar lo que vive sÃ³lo en el servidor:
           #   .env           -> credenciales de la base de datos
-          #   node_modules   -> dependencias instaladas allí
+          #   node_modules   -> dependencias instaladas allÃ­
           dangerous-clean-slate: false
           exclude: |
             **/.git*
@@ -61,8 +61,8 @@ jobs:
             **/.npm-cache/**
             **/.deploy/**
 
-      - name: Reiniciar la aplicación Node (Passenger)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Reiniciar la aplicaciÃ³n Node (Passenger)
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USUARIO }}
@@ -75,5 +75,5 @@ jobs:
       - name: Aviso si cambiaron las dependencias
         run: |
           echo "Si esta subida ha modificado package.json, entra en cPanel ->"
-          echo "Setup Node.js App -> tu aplicación -> 'Run NPM Install'."
+          echo "Setup Node.js App -> tu aplicaciÃ³n -> 'Run NPM Install'."
           echo "(El despliegue por FTP no instala dependencias nuevas.)"
