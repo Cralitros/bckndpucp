@@ -15,7 +15,7 @@ En la máquina local, dentro de `D:\Proyectos\backendpucp`:
 ```bash
 git add -A
 git commit -m "Historial de reconocimientos + limpieza de campos fijos"
-git remote add origin https://github.com/TU_USUARIO/backendpucp.git
+git remote add origin https://github.com/Cralitros/backendpucp.git
 git push -u origin main
 ```
 

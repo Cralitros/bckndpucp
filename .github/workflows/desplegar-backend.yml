@@ -14,6 +14,31 @@ jobs:
       - name: Descargar el código
         uses: actions/checkout@v4
 
+      - name: Comprobar la configuración (Secrets)
+        env:
+          SERVIDOR: ${{ secrets.FTP_SERVER }}
+          USUARIO: ${{ secrets.FTP_USUARIO }}
+          CLAVE: ${{ secrets.FTP_PASSWORD }}
+          CARPETA: ${{ secrets.FTP_CARPETA_BACK }}
+        run: |
+          fallo=0
+          for variable in SERVIDOR USUARIO CLAVE CARPETA; do
+            if [ -z "${!variable}" ]; then
+              echo "::error::Falta el secret equivalente a $variable (FTP_SERVER / FTP_USUARIO / FTP_PASSWORD / FTP_CARPETA_BACK)"
+              fallo=1
+            fi
+          done
+          if [ "$fallo" != "0" ]; then
+            echo "Revisa: Settings > Secrets and variables > Actions"
+            exit 1
+          fi
+          echo "Los 4 secrets están definidos ✅"
+          case "$CARPETA" in
+            */) echo "::warning::FTP_CARPETA_BACK termina en '/'. Quítale la barra final: se le añade '/tmp/' para el reinicio y quedaría una barra doble." ;;
+            /*) echo "Carpeta destino: ruta absoluta ✅ (recuerda: SIN barra final)" ;;
+            *)  echo "::warning::FTP_CARPETA_BACK no empieza por '/'. Si tu cuenta FTP está restringida a una carpeta, usa la ruta relativa que ves en el File Manager." ;;
+          esac
+
       - name: Subir el código por FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
