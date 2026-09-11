@@ -40,34 +40,6 @@ const DocenteInvestigador = sequelize.define('DocenteInvestigador', {
         type: DataTypes.STRING,
          allowNull: true
     },
-    ri:{
-        type: DataTypes.TEXT('long'),
-         allowNull: true
-    },
-    pibpdu:{
-        type: DataTypes.TEXT('long'),
-         allowNull: true
-    },
-    gadi:{
-        type: DataTypes.TEXT('long'),
-         allowNull: true
-    },
-    sei:{
-        type: DataTypes.TEXT('long'),
-         allowNull: true
-    },
-    gadd:{
-        type: DataTypes.TEXT('long'),
-         allowNull: true
-    },
-    gadit:{
-        type: DataTypes.TEXT('long'),
-         allowNull: true
-    },
-    dfi:{
-        type: DataTypes.TEXT('long'),
-         allowNull: true
-    },
     condicion: {
         type: DataTypes.STRING,
          allowNull: true
@@ -76,7 +48,17 @@ const DocenteInvestigador = sequelize.define('DocenteInvestigador', {
         type: DataTypes.TEXT('long'),
         allowNull: true
     },
-   
+    // Historial de reconocimientos del docente (pestaña "Reconocimientos").
+    // Guarda un array JSON: [{ anio, nombre, categoria, unidad, observaciones }]
+    //
+    // Sustituye a las columnas fijas ri, pibpdu, gadi, sei, gadd, gadit y dfi,
+    // que ya no se usan (sus datos se pasaron al historial con el script
+    // `sql/migracion_reconocimientos_datos_y_limpieza.sql`).
+    reconocimientos: {
+        type: DataTypes.TEXT('long'),
+        allowNull: true
+    },
+
 }, {
   tableName: 'docenteinvestigadors', // ← coincide con el nombre real en la BD
 });

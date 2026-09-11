@@ -1,0 +1,5 @@
+Marcador para reiniciar la aplicación Node en el servidor.
+
+Subir este archivo (o modificarlo) hace que Passenger reinicie la app, porque
+detecta el cambio de fecha de `tmp/restart.txt`. Lo usa el flujo de despliegue
+`.github/workflows/desplegar-backend.yml`.

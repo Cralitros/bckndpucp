@@ -1,0 +1,54 @@
+name: Desplegar backend
+
+# Se ejecuta al subir cambios a la rama main (o a mano desde la pestaña Actions).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Subir el código por FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USUARIO }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: ${{ secrets.FTP_CARPETA_BACK }}
+          # NUNCA borrar ni pisar lo que vive sólo en el servidor:
+          #   .env           -> credenciales de la base de datos
+          #   node_modules   -> dependencias instaladas allí
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            **/.env
+            **/.env.*
+            **/.npm-cache/**
+            **/.deploy/**
+
+      - name: Reiniciar la aplicación Node (Passenger)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USUARIO }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Subir este archivo actualiza su fecha y Passenger reinicia la app.
+          local-dir: ./.deploy/
+          server-dir: ${{ secrets.FTP_CARPETA_BACK }}/tmp/
+          dangerous-clean-slate: false
+
+      - name: Aviso si cambiaron las dependencias
+        run: |
+          echo "Si esta subida ha modificado package.json, entra en cPanel ->"
+          echo "Setup Node.js App -> tu aplicación -> 'Run NPM Install'."
+          echo "(El despliegue por FTP no instala dependencias nuevas.)"
