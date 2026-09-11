@@ -1,5 +1,5 @@
 # Despliegue del backend (Node + Express) en BanaHosting
-
+# esto es una prueba quiero saber si se actualiza
 Al subir cambios a la rama **main** en GitHub, el flujo
 `.github/workflows/desplegar-backend.yml` sube el código por FTP y reinicia la
 aplicación. No hace falta entrar al servidor.
