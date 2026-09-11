@@ -7,6 +7,7 @@ const cors = require('cors');
 const config = require('./config');
 const sequelize = require('./config/database');
 
+//EXPREESS ES EL SERIVDOR POR EXCELNCIA Y VALIDA PAR AVER SI FUNCIONA MI PRUEBA
 const app = express();
 
 app.use(express.json());
