@@ -125,3 +125,26 @@ jobs:
           echo "Si esta subida ha modificado package.json, entra en cPanel ->"
           echo "Setup Node.js App -> tu aplicación -> 'Run NPM Install'."
           echo "(El despliegue por FTP no instala dependencias nuevas.)"
+
+      - name: Comprobar que la aplicación está corriendo la versión nueva
+        # Sólo avisa: subir los archivos y reiniciar la app son cosas distintas.
+        continue-on-error: true
+        env:
+          URL_PUBLICA: https://derechopucp.com/backendPucp2
+        run: |
+          corto="${GITHUB_SHA:0:7}"
+          echo "El servidor debería estar corriendo el commit $corto"
+          echo "Consultando $URL_PUBLICA/version ..."
+          respuesta=$(curl -s -m 30 "$URL_PUBLICA/version" || true)
+          if [ -z "$respuesta" ]; then
+            echo "::warning::No respondió $URL_PUBLICA/version. Puede que la app no se haya reiniciado todavía (o que la URL sea otra)."
+            exit 0
+          fi
+          echo "Respuesta: $respuesta"
+          if echo "$respuesta" | grep -q "$corto"; then
+            echo "✅ OK: el servidor ya ejecuta el commit $corto"
+          else
+            echo "::warning::Los archivos se subieron, pero la aplicación sigue ejecutando OTRA versión."
+            echo "Solución: cPanel -> Setup Node.js App -> tu aplicación -> RESTART,"
+            echo "y vuelve a abrir $URL_PUBLICA/version (debe mostrar $corto)."
+          fi
