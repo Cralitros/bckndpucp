@@ -45,7 +45,7 @@ app.get(`${basePath}/version`, (req, res) => {
     consultado: new Date().toISOString(),
   });
 });
-
+app.use(express.json({ limit: '10mb' }));
 // ---------------------------------------------------------------
 // Registro de rutas (mismo conjunto que el app.js original de desarrollo)
 // ---------------------------------------------------------------
