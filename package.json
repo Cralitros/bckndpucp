@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "check": "node tools/check-routes.js"
+    "check": "node tools/check-routes.js",
+    "smoke:documentos": "node tools/smoke-documentos.js"
   },
   "keywords": [],
   "author": "",

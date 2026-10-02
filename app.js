@@ -11,7 +11,16 @@ const sequelize = require('./config/database');
 //VALE AHORA SI TIENE QUE FUNCIONAR
 const app = express();
 
-app.use(express.json());
+// Límite del cuerpo JSON: 10 MB.
+//
+// Sin opciones, Express corta en 100 KB (el valor por defecto de body-parser) y
+// la petición muere con 413 —o con la conexión cortada, que es lo que veía el
+// navegador— en cuanto el histórico de categoría llevaba un documento adjunto.
+//
+// Tiene que ser UN solo parser y estar ANTES de los routers: el que se añadió
+// más abajo no llegaba a aplicarse, porque las rutas ya estaban registradas y el
+// primero que veía el cuerpo era este.
+app.use(express.json({ limit: '10mb' }));
 
 // CORS: si CORS_ORIGIN es "*" se permite todo (comportamiento original);
 // si se lista un origen concreto (o varios separados por coma), se restringe.
@@ -45,7 +54,6 @@ app.get(`${basePath}/version`, (req, res) => {
     consultado: new Date().toISOString(),
   });
 });
-app.use(express.json({ limit: '10mb' }));
 // ---------------------------------------------------------------
 // Registro de rutas (mismo conjunto que el app.js original de desarrollo)
 // ---------------------------------------------------------------
@@ -72,6 +80,13 @@ app.use(`${basePath}/afps`, require('./routes/afpRoute'));
 app.use(`${basePath}/area`, require('./routes/areaRoute'));
 app.use(`${basePath}/plan`, require('./routes/planRoute'));
 app.use(`${basePath}/firma`, require('./routes/firmaRoute'));
+
+// ---------------------------------------------------------------------------
+// Carpeta de los documentos que sustentan los eventos del histórico de
+// categoría: se crea al arrancar (con su .htaccess) y avisa si quedó dentro de
+// public_html. Los archivos se suben por trozos desde el panel.
+// ---------------------------------------------------------------------------
+require('./controllers/docentesCategoriaDocumentoController').prepararCarpeta();
 
 const PORT = config.port;
 

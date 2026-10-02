@@ -53,3 +53,7 @@ Thumbs.db
 # Se puede ver en el navegador en <url>/version
 version.json
 
+# Documentos del histórico de categoría: viven en el servidor, no en el repo.
+# (En producción conviene además una carpeta fuera de public_html: DIR_DOCUMENTOS)
+/documentos-docentes/
+

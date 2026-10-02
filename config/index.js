@@ -1,6 +1,7 @@
 // config/index.js — Configuración centralizada de la aplicación.
 // Carga variables de entorno (.env) y expone valores con los mismos
 // comportamientos por defecto que tenía el código original.
+const path = require('path');
 require('dotenv').config({ quiet: true });
 
 module.exports = {
@@ -23,4 +24,12 @@ module.exports = {
     .filter(Boolean),
   // Modo de sincronización: none | alter | force (por defecto no sincroniza).
   dbSync: (process.env.DB_SYNC || 'none').toLowerCase(),
+  // Carpeta donde viven los documentos que sustentan los eventos del histórico
+  // de categoría. Por defecto, una hermana de la carpeta de la aplicación: el
+  // despliegue por FTP sube el código a su carpeta y no toca lo de al lado.
+  // Conviene fijarla con DIR_DOCUMENTOS fuera de public_html (son documentos de
+  // docentes y no deben poder abrirse por URL).
+  get documentosDir() {
+    return process.env.DIR_DOCUMENTOS || path.join(__dirname, '..', 'documentos-docentes');
+  },
 };

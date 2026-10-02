@@ -71,3 +71,31 @@ El flujo sube el código (sin `node_modules`, sin `.env`) y luego sube
   false`): no se pierden `.env`, `node_modules` ni nada que exista sólo allí.
 - Los archivos `fonts/` y `pdf/` sí se suben: los necesita la generación de
   reportes.
+
+## Documentos del histórico de categoría
+
+Los PDF/Word/imágenes que sustentan los eventos de categoría **no** se guardan en
+la base de datos ni dentro del JSON de `categoria`: el panel los sube por trozos
+de 64 KB a `docentescategoria/documento/{archivo}` y el backend los deja en disco.
+
+- Carpeta por defecto: `documentos-docentes/`, **hermana** de la carpeta de la
+  aplicación (fuera de lo que sube el despliegue). Se crea sola al arrancar, con
+  un `.htaccess` que niega el acceso directo.
+- Para fijarla: `DIR_DOCUMENTOS=/home/USUARIO/documentos-docentes` en el `.env`
+  del servidor. Debe quedar **fuera de `public_html`** (son documentos de
+  docentes) y el proceso Node necesita permiso de escritura.
+- En el log de arranque aparece la ruta que se está usando; si queda dentro de
+  `public_html`, avisa con un `AVISO`.
+- Esa carpeta **no** está en el repositorio (está en `.gitignore`), así que el
+  despliegue por FTP no la toca.
+
+Endpoints añadidos (antes del resto de `/docentescategoria`):
+
+| Método | Ruta | Para qué |
+|---|---|---|
+| POST | `/docentescategoria/documento/:archivo?indice=N` | Sube un trozo (`indice=0` crea el archivo) |
+| GET | `/docentescategoria/documento/:archivo` | Devuelve el archivo (para «Ver») |
+| DELETE | `/docentescategoria/documento/:archivo` | Borra el archivo |
+
+El mapa de endpoints tiene su referencia en `tools/routes-reference.txt`
+(`npm run check` avisa si cambia).

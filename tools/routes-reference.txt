@@ -1,4 +1,4 @@
-﻿Total rutas: 167
+﻿Total rutas: 170
 DELETE /afps/:id
 DELETE /area/:id
 DELETE /bancos/:id
@@ -7,6 +7,7 @@ DELETE /departamentos/:id
 DELETE /distritos/:id
 DELETE /docentes/:codigodocentes
 DELETE /docentescategoria/:id
+DELETE /docentescategoria/documento/:archivo
 DELETE /docentescurso/:id
 DELETE /docentesencuesta/:id
 DELETE /docentesgrado/:id
@@ -52,6 +53,7 @@ GET    /docentes/report
 GET    /docentes/total
 GET    /docentescategoria/
 GET    /docentescategoria/:codigodocentes
+GET    /docentescategoria/documento/:archivo
 GET    /docentescategoria/report
 GET    /docentescategoria/total
 GET    /docentescurso/
@@ -125,6 +127,7 @@ POST   /departamentos/
 POST   /distritos/
 POST   /docentes/
 POST   /docentescategoria/
+POST   /docentescategoria/documento/:archivo
 POST   /docentescurso/
 POST   /docentesencuesta/
 POST   /docentesgrado/
