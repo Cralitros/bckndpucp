@@ -55,6 +55,23 @@ app.get(`${basePath}/version`, (req, res) => {
   });
 });
 // ---------------------------------------------------------------
+// Autenticación
+//
+// El único endpoint público es `POST /login/login` (devuelve el token) y
+// `/version` (comprobación de despliegue). A partir de aquí, todo exige la
+// cabecera `Authorization: Bearer <token>`: sin ella, un cliente que conozca la
+// URL ya no puede leer ni escribir nada.
+// ---------------------------------------------------------------
+const autenticacion = require('./middlewares/autenticacion');
+
+// El router de login lleva su propio guard interno: deja público `POST /login`
+// y protege el registro y el CRUD de usuarios.
+app.use(`${basePath}/login`, require('./routes/loginRoute'));
+
+// Todo lo que se registre a partir de esta línea pasa por el token.
+app.use(basePath || '/', autenticacion);
+
+// ---------------------------------------------------------------
 // Registro de rutas (mismo conjunto que el app.js original de desarrollo)
 // ---------------------------------------------------------------
 app.use(`${basePath}/docentes`, require('./routes/docentesRoute'));
@@ -73,7 +90,6 @@ app.use(`${basePath}/distritos`, require('./routes/distritoRoute'));
 app.use(`${basePath}/facultad`, require('./routes/facultadRoute'));
 app.use(`${basePath}/escuela`, require('./routes/escuelaRoute'));
 app.use(`${basePath}/programa`, require('./routes/programaRoute'));
-app.use(`${basePath}/login`, require('./routes/loginRoute'));
 app.use(`${basePath}/bancos`, require('./routes/bancoRoute'));
 app.use(`${basePath}/nacionalidad`, require('./routes/nacionalidadRoute'));
 app.use(`${basePath}/afps`, require('./routes/afpRoute'));

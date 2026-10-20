@@ -28,6 +28,19 @@ const DocenteInvestigador = sequelize.define('DocenteInvestigador', {
         type: DataTypes.STRING,
          allowNull: true
     },
+    // Fecha en la que se registró el reconocimiento de investigador.
+    // Se guarda como texto ISO, igual que `fecha` en `DocenteCategoria`: así no
+    // hay sorpresas de zona horaria al leer y volver a escribir el valor.
+    fechaRegistro: {
+        type: DataTypes.STRING,
+         allowNull: true
+    },
+    // Observaciones generales del investigador (último campo de la pestaña
+    // "Información General").
+    observaciones: {
+        type: DataTypes.TEXT,
+         allowNull: true
+    },
     rol: {
         type: DataTypes.STRING,
          allowNull: true

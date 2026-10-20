@@ -72,6 +72,27 @@ El flujo sube el código (sin `node_modules`, sin `.env`) y luego sube
 - Los archivos `fonts/` y `pdf/` sí se suben: los necesita la generación de
   reportes.
 
+## Autenticación (token en cada petición)
+
+Toda la API exige la cabecera `Authorization: Bearer <token>`, salvo:
+
+- `POST /login/login` → es lo que devuelve el token (dura 1 hora).
+- `GET /version` → comprobación de despliegue.
+
+El token lo firma el login con `JWT_SECRET` y lo valida
+`middlewares/autenticacion.js` en cada petición. Sin él, un `POST` desde otra
+terminal recibe **401** aunque conozca la URL. El panel lo manda solo: en el
+frontend, `tokenInterceptor` adjunta el token de la sesión y, si el backend
+responde 401, limpia la sesión y vuelve al login.
+
+- **`JWT_SECRET` en el `.env` del servidor**: si queda vacío se usa `secretkey`,
+  que está en el código, así que cualquiera podría fabricarse un token. Poné una
+  cadena aleatoria larga (ver `.env.example`). Al cambiarlo, todos vuelven a
+  entrar una vez.
+- El registro de usuarios (`POST /login/register`) también exige token: si no,
+  cualquiera podría crearse un usuario y obtener uno.
+- Prueba rápida sin base de datos: `npm run smoke:auth`.
+
 ## Documentos del histórico de categoría
 
 Los PDF/Word/imágenes que sustentan los eventos de categoría **no** se guardan en
