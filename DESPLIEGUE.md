@@ -64,9 +64,16 @@ El flujo sube el código (sin `node_modules`, sin `.env`) y luego sube
   no instala paquetes).
 - **Si el reinicio no ocurre**: cPanel → Setup Node.js App → **Restart**, o crea
   la carpeta `tmp/` dentro del backend si no existe.
-- **La base de datos no se migra sola**: los scripts de `sql/` se ejecutan a mano
-  en phpMyAdmin (por ejemplo el `ALTER TABLE` de `reconocimientos` o el borrado de
-  los campos fijos).
+- **La base de datos no se migra sola**: el backend arranca con `DB_SYNC=none`,
+  así que **un campo nuevo en el modelo no crea la columna**. Si el modelo la
+  declara y la base no la tiene, ese formulario **no guarda nada** (MySQL:
+  «Unknown column '...' in 'field list'»).
+  - Lo más rápido: `node tools/asegurar-columnas.js` (`npm run db:columnas`), que
+    añade las columnas que falten y no toca nada más. También se puede lanzar
+    desde cPanel → **Setup Node.js App** → *Run JS script*.
+  - O el `ALTER TABLE` de `sql/` a mano en phpMyAdmin.
+  - Al añadir un campo nuevo al modelo, agrégalo también a
+    `tools/asegurar-columnas.js`.
 - El despliegue **nunca borra** archivos del servidor (`dangerous-clean-slate:
   false`): no se pierden `.env`, `node_modules` ni nada que exista sólo allí.
 - Los archivos `fonts/` y `pdf/` sí se suben: los necesita la generación de

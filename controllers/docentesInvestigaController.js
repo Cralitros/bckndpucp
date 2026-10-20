@@ -98,6 +98,17 @@ async function crear(req, res) {
 async function actualizar(req, res) {
     try {
         const codigodocente = req.params.codigodocentes;
+
+        // `update` de Sequelize no avisa cuando el WHERE no coincide con ninguna
+        // fila: respondía 201 y el panel cerraba el diálogo como si hubiera
+        // guardado. Se comprueba antes para avisar de verdad.
+        const existe = await DocenteInvestigador.count({ where: { codigodocente } });
+        if (existe === 0) {
+            return res.status(404).json({
+                mensaje: `No hay registro de investigación para el código ${codigodocente}: no se guardó nada.`,
+            });
+        }
+
         // Actualizar el registro de departamento en la base de datos
         await DocenteInvestigador.update(req.body, {
             where: { codigodocente },
@@ -106,7 +117,9 @@ async function actualizar(req, res) {
         res.status(201).json("Se actualizo correctamente");
     } catch (error) {
         console.error(error);
-        res.status(500).json({ mensaje: 'Error al actualizar' });
+        // Se devuelve el motivo real: «Error al actualizar» a secas no permitía
+        // distinguir una columna que falta de un dato inválido.
+        res.status(500).json({ mensaje: `Error al actualizar: ${error.message}` });
     }
 }
 
@@ -123,7 +136,7 @@ async function eliminar(req, res) {
         res.status(200).json({ mensaje: 'Registro eliminado' });;
     } catch (error) {
         console.error(error);
-        res.status(500).json({ mensaje: 'Error al eliminar' });
+        res.status(500).json({ mensaje: `Error al eliminar: ${error.message}` });
     }
 }
 

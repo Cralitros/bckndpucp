@@ -15,6 +15,15 @@
 -- USO (en la base que use el backend desplegado, p. ej. xthansnv_pucp2):
 --   mysql -h <host> -u <usuario> -p <base_de_datos> < agregar_fecha_registro_observaciones_investigador.sql
 --
+-- ALTERNATIVA (recomendada, no hace falta phpMyAdmin):
+--   node tools/asegurar-columnas.js        ← o `npm run db:columnas`
+--   Es idempotente: añade las columnas que falten y no toca nada más. Se puede
+--   lanzar desde cPanel → Setup Node.js App → Run JS script.
+--
+-- SI NO SE CREAN LAS COLUMNAS, EL FORMULARIO NO GUARDA NADA: el modelo ya las
+-- declara, y MySQL rechaza cada INSERT/UPDATE con
+-- «Unknown column 'fechaRegistro' in 'field list'».
+--
 -- Si algún día se arranca con DB_SYNC=alter, Sequelize crearía las columnas sola.
 -- ---------------------------------------------------------------------------
 
